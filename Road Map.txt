@@ -1,0 +1,25 @@
+Road Map:
+
+Finished:
+
+Could be better:
+Job Class
+Race Class
+Weapon Class
+
+
+Needs to be redone:
+Person Class
+Ability Class
+
+
+Next:
+Map creator
+
+To do:
+Battles
+Character Presets
+Magic System
+
+Possibly:
+Magic Element Class
