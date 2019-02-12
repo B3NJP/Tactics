@@ -3,14 +3,14 @@ Road Map:
 Finished:
 
 Could be better:
-Job Class
-Race Class
-Weapon Class
 
 
 Needs to be redone:
 Person Class
 Ability Class
+Job Class - Levelling
+Race Class - Levelling
+Weapon Class - Levelling
 
 
 Next:
@@ -20,6 +20,7 @@ To do:
 Battles
 Character Presets
 Magic System
+Item Class
 
 Possibly:
 Magic Element Class
