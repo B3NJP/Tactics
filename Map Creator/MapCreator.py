@@ -1,4 +1,4 @@
-import sys, pygame, fileinput
+import sys, pygame, fileinput, mapcreatorfunctions
 pygame.init()
 box = [100, 100]
 size = [700, 700]
@@ -14,10 +14,12 @@ for line in fileinput.input():
 
 screen = pygame.display.set_mode(size)
 
+hill = pygame.transform.scale(pygame.image.load("../Assets/Tiles/hill.png"), box)
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            quit()
+            mapcreatorfunctions.end(grid)
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
                 area[1] -= .2
@@ -28,7 +30,7 @@ while True:
             if event.key == pygame.K_LEFT:
                 area[0] -= .2
         if event.type == pygame.MOUSEBUTTONDOWN:
-            grid[int((event.pos[1]-area[1]*100)//100)][int((event.pos[0]-area[0]*100)//100)] = "1"
+            grid[int((event.pos[1]-area[1]*100)//100)][int((event.pos[0]-area[0]*100)//100)] = "h"
             # print((event.pos[0]-area[0]*100)//100)
 
     screen.fill(white)
@@ -37,15 +39,7 @@ while True:
         for j in range(0, len(grid[i])):
             if (i+area[1] < 700 and i+area[1] > -100):
                 if (j+area[0] < 700 and j+area[0] > -100):
-                    if grid[i][j] == "0":
-                        pygame.draw.rect(screen, black, [(j+area[0])*100, (i+area[1])*100]+box, 1)
-                    # else:
-                        # pygame.draw.rect(screen, (50, 0, 0), [(j+area[0])*100, (i+area[1])*100]+box, 1)
+                    pygame.draw.rect(screen, black, [(j+area[0])*100, (i+area[1])*100]+box, 1)
+                    if grid[i][j] == "h":
+                        screen.blit(hill, [(j+area[0])*100, (i+area[1])*100])
     pygame.display.flip()
-
-def quit():
-    str = ""
-    for i in grid:
-        str += ",".join(i)
-    print(str)
-    sys.exit()
