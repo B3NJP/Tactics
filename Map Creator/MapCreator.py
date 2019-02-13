@@ -16,6 +16,8 @@ screen = pygame.display.set_mode(size)
 
 hill = pygame.transform.scale(pygame.image.load("../Assets/Tiles/hill.png"), box)
 
+selected = "0"
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -29,8 +31,12 @@ while True:
                 area[1] += .2
             if event.key == pygame.K_LEFT:
                 area[0] -= .2
+            if event.key == pygame.K_h:
+                selected = "h"
+            if event.key == pygame.K_0:
+                selected = "0"
         if event.type == pygame.MOUSEBUTTONDOWN:
-            grid[int((event.pos[1]-area[1]*100)//100)][int((event.pos[0]-area[0]*100)//100)] = "h"
+            grid[int((event.pos[1]-area[1]*100)//100)][int((event.pos[0]-area[0]*100)//100)] = selected
             # print((event.pos[0]-area[0]*100)//100)
 
     screen.fill(white)
