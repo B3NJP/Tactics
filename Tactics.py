@@ -1,4 +1,4 @@
-import sys, pygame, fileinput, TacticsClasses, TacticsPresets
+import sys, pygame, fileinput, TacticsClasses, TacticsPresets, tacticsfunctions
 pygame.init()
 box = [100, 100]
 size = [700, 700]
