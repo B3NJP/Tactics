@@ -1,9 +1,9 @@
 Road Map:
 
 Finished:
+Tile Class
 
 Could be better:
-
 
 Needs to be redone:
 Person Class
@@ -12,10 +12,8 @@ Job Class - Levelling
 Race Class - Levelling
 Weapon Class - Levelling
 
-
 Next:
 Map creator
-Tile Class
 
 To do:
 Battles
