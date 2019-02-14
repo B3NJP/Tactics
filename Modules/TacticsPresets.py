@@ -11,7 +11,7 @@ exampleAbility = TacticsClasses.Ability(name = "example", type = "magic", range 
 
 
 # Growth Rate Priority:
-# Race > Job > Base
+# Base > Race > Job
 
 # Abilities
 # Spells
