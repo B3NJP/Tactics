@@ -61,8 +61,9 @@ while True:
                         moveTo = tacticsfunctions.moveAble(selected, grid, tiles)
                         break
             elif action == tacticsfunctions.Actions.MOVE:
-                tacticsfunctions.move(selected, location)
-                action = tacticsfunctions.Actions.SELECT
+                if location in moveTo:
+                    tacticsfunctions.move(selected, location)
+                    action = tacticsfunctions.Actions.SELECT
 
     screen.fill(white)
     # screen.fill((black), box)
