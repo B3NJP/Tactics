@@ -8,3 +8,6 @@ def move(person, location):
 class Actions(Enum):
     MOVE = auto()
     SELECT = auto()
+
+def end():
+    sys.exit()

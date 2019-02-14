@@ -1,4 +1,4 @@
-import TacticsClasses
+from Modules import TacticsClasses
 
 #examples
 exampleRace = TacticsClasses.Race("example", 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, [], [])
@@ -42,5 +42,6 @@ eatSoul = TacticsClasses.Ability(name = "eatSoul", type = "racial", range = 1, m
 # knight = TacticsClasses.Job("knight", 0.4, 0, 0.3, 0, 0.5, 0.1, 0.2, 0.2, [])
 # mage = TacticsClasses.Job("mage", 0.1, 0.4, 0.1, 0.3, 0.1, 0.2, 0.1, 0.2, [fireball, teleport])
 
-def person(job, race):
-    pass
+# Tiles
+plain = TacticsClasses.Tile("plain", "0", 0, 0, 1, "Assets/Tiles/plains.png")
+hill = TacticsClasses.Tile("hill", "h", 1, 0, 2, "Assets/Tiles/hill.png")

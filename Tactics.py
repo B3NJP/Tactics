@@ -1,4 +1,5 @@
-import sys, pygame, fileinput, TacticsClasses, TacticsPresets, tacticsfunctions
+import sys, pygame, fileinput
+from Modules import TacticsClasses, TacticsPresets, tacticsfunctions
 pygame.init()
 box = [100, 100]
 size = [700, 700]
@@ -14,7 +15,10 @@ for line in fileinput.input():
 
 screen = pygame.display.set_mode(size)
 
-hill = pygame.transform.scale(pygame.image.load("Assets/Tiles/hill.png"), box)
+tiles = [
+TacticsPresets.plain,
+TacticsPresets.hill
+]
 p1 = pygame.transform.scale(pygame.image.load("Assets/Tiles/P1.png"), box)
 
 selected = "0"
@@ -31,7 +35,7 @@ selected = None
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            mapcreatorfunctions.end(grid)
+            tacticsfunctions.end()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
                 area[1] += .2
@@ -64,8 +68,10 @@ while True:
             if (i+area[1] < 700 and i+area[1] > -100):
                 if (j+area[0] < 700 and j+area[0] > -100):
                     pygame.draw.rect(screen, black, [(j+area[0])*100, (i+area[1])*100]+box, 1)
-                    if grid[i][j] == "h":
-                        screen.blit(hill, [(j+area[0])*100, (i+area[1])*100])
+                    for k in tiles:
+                        if grid[i][j] == k.key:
+                            screen.blit(k.img, [(j+area[0])*100, (i+area[1])*100])
+                            break
 
     for i in units:
         screen.blit(p1, [(i.location[0]+area[0])*100, (i.location[1]+area[1])*100])

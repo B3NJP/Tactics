@@ -1,4 +1,4 @@
-import math, random
+import math, random, pygame
 
 class Person:
     def __init__(self, name, job, race, stats, growthRates, location = [0,0], abilities = [], weapon = None, items = []):
@@ -117,10 +117,13 @@ class Race:
         self.growthRates = growthRates
 
 class Weapon:
-    def __init__(self, name, pAtk, mAtk, def, res, agi, skl, abilities):
+    def __init__(self, name, pAtk, mAtk, dfce, res, agi, skl, abilities):
         self.name = name
         self.pAtk = pAtk
         self.mAtk = mAtk
+
+        self.dfce = dfce
+        self.res = res
 
         self.agi = agi
         self.skl = skl
@@ -128,10 +131,12 @@ class Weapon:
         self.abilities = abilities
 
 class Tile:
-    def __init__(self, name, def, res, mov, img):
+    def __init__(self, name, key, dfce, res, mov, img):
         self.name = name
-        self.def = def
+        self.key = key
+        
+        self.dfce = dfce
         self.res = res
         self.mov = mov
 
-        self.img = pygame.transform.scale(pygame.image.load(img), box)
+        self.img = pygame.transform.scale(pygame.image.load(img), [100, 100])

@@ -1,4 +1,5 @@
-import sys, pygame, fileinput, mapcreatorfunctions
+import sys, pygame, fileinput
+from Modules import TacticsPresets, mapcreatorfunctions
 pygame.init()
 box = [100, 100]
 size = [700, 700]
@@ -14,7 +15,11 @@ for line in fileinput.input():
 
 screen = pygame.display.set_mode(size)
 
-hill = pygame.transform.scale(pygame.image.load("../Assets/Tiles/hill.png"), box)
+# hill = pygame.transform.scale(pygame.image.load("../Assets/Tiles/hill.png"), box)
+tiles = [
+TacticsPresets.plain,
+TacticsPresets.hill
+]
 
 selected = "0"
 
@@ -47,6 +52,9 @@ while True:
             if (i+area[1] < 700 and i+area[1] > -100):
                 if (j+area[0] < 700 and j+area[0] > -100):
                     pygame.draw.rect(screen, black, [(j+area[0])*100, (i+area[1])*100]+box, 1)
-                    if grid[i][j] == "h":
-                        screen.blit(hill, [(j+area[0])*100, (i+area[1])*100])
+                    for k in tiles:
+                        if grid[i][j] == k.key:
+                            screen.blit(k.img, [(j+area[0])*100, (i+area[1])*100])
+                            break
+
     pygame.display.flip()
