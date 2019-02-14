@@ -117,7 +117,7 @@ class Race:
         self.growthRates = growthRates
 
 class Weapon:
-    def __init__(self, name, pAtk, mAtk, agi, skl, abilities):
+    def __init__(self, name, pAtk, mAtk, def, res, agi, skl, abilities):
         self.name = name
         self.pAtk = pAtk
         self.mAtk = mAtk
@@ -126,3 +126,12 @@ class Weapon:
         self.skl = skl
 
         self.abilities = abilities
+
+class Tile:
+    def __init__(self, name, def, res, mov, img):
+        self.name = name
+        self.def = def
+        self.res = res
+        self.mov = mov
+
+        self.img = pygame.transform.scale(pygame.image.load(img), box)
