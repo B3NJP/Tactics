@@ -15,13 +15,13 @@ Weapon Class - Levelling
 
 Next:
 Map creator
+Tile Class
 
 To do:
 Battles
 Character Presets
 Magic System
 Item Class
-Tile Class
 
 Possibly:
 Magic Element Class
