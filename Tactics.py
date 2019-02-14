@@ -14,12 +14,16 @@ for line in fileinput.input():
 
 screen = pygame.display.set_mode(size)
 
-hill = pygame.transform.scale(pygame.image.load("../Assets/Tiles/hill.png"), box)
+hill = pygame.transform.scale(pygame.image.load("Assets/Tiles/hill.png"), box)
+p1 = pygame.transform.scale(pygame.image.load("Assets/Tiles/P1.png"), box)
 
 selected = "0"
 
 # name, job, race, stats, growthRates, location = [0,0], abilities = [], weapon = None, items = []
-unit1 = TacticsClasses.Person("1", TacticsPresets.exampleJob, TacticsPresets.exampleRace, [10, 10, 10, 10, 10, 10, 10, 10, 10])
+unit1 = TacticsClasses.Person("1", TacticsPresets.exampleJob, TacticsPresets.exampleRace, [10, 10, 10, 10, 10, 10, 10, 10, 10], [10, 10, 10, 10, 10, 10, 10, 10, 10])
+
+units = []
+units += [unit1]
 
 while True:
     for event in pygame.event.get():
@@ -38,9 +42,7 @@ while True:
                 selected = "h"
             if event.key == pygame.K_0:
                 selected = "0"
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            grid[int((event.pos[1]-area[1]*100)//100)][int((event.pos[0]-area[0]*100)//100)] = selected
-            # print((event.pos[0]-area[0]*100)//100)
+        # if event.type == pygame.MOUSEBUTTONDOWN:
 
     screen.fill(white)
     # screen.fill((black), box)
@@ -51,4 +53,7 @@ while True:
                     pygame.draw.rect(screen, black, [(j+area[0])*100, (i+area[1])*100]+box, 1)
                     if grid[i][j] == "h":
                         screen.blit(hill, [(j+area[0])*100, (i+area[1])*100])
+
+    for i in units:
+        screen.blit(p1, [(i.location[0]+area[0])*100, (i.location[1]+area[1])*100])
     pygame.display.flip()
