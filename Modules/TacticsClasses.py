@@ -82,7 +82,20 @@ class Person:
         return val
 
     def getAbilities(self):
-        return self.abilities + self.job.abilities + self.race.abilities
+        abilities = []
+        for i in self.abilities:
+            if not i in abilities:
+                abilities += [i]
+
+        for i in self.job.abilities:
+            if not i in abilities:
+                abilities += [i]
+
+        for i in self.race.abilities:
+            if not i in abilities:
+                abilities += [i]
+
+        return abilities
 
 
 class Ability:

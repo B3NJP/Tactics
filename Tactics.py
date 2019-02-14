@@ -30,6 +30,9 @@ TacticsPresets.hill
 p1 = pygame.transform.scale(pygame.image.load("Assets/Tiles/P1.png"), box)
 p2 = pygame.transform.scale(pygame.image.load("Assets/Tiles/P2.png"), box)
 
+# Text Font
+font = pygame.font.Font(None, 25)
+
 # Creates Units
 # name, job, race, stats, growthRates, location = [0,0], abilities = [], weapon = None, items = []
 unit1 = TacticsClasses.Person("1", TacticsPresets.knight, TacticsPresets.human, [20, 20, 20, 20, 20, 20, 20, 20, 5], [.3, .3, .3, .3, .3, .3, .3, .3])
@@ -37,6 +40,7 @@ unit1 = TacticsClasses.Person("1", TacticsPresets.knight, TacticsPresets.human, 
 units = []
 units += [unit1]
 
+# Creates Enemies
 enemy1 = TacticsPresets.humanKnightTemplateUnit("2", [3, 4])
 
 enemies = []
@@ -54,6 +58,8 @@ usableAbilities = []
 targets = []
 abilityUsed = 0
 usableRange = []
+
+spot = 25 # Spot from bottom to display usableAbilities
 
 while True:
     # Gets events
@@ -169,6 +175,17 @@ while True:
     # Draw enemies
     for i in enemies:
         screen.blit(p2, [(i.location[0]+area[0])*100, (i.location[1]+area[1])*100])
+
+    if action == tacticsfunctions.Actions.ABILITY:
+        screen.fill(white, [0, 700-len(usableAbilities)*50, 400, len(usableAbilities)*50+50])
+        pygame.draw.rect(screen, black, [0, 700-len(usableAbilities)*50, 400, len(usableAbilities)*50+50], 1)
+        spot = 25
+        for i in usableAbilities:
+            if i == usableAbilities[abilityUsed]:
+                screen.blit(font.render(i.name, True, (255, 0, 0)), [10, 700-spot])
+            else:
+                screen.blit(font.render(i.name, True, black), [10, 700-spot])
+            spot += 50
 
     # Draws everything to screen
     pygame.display.flip()

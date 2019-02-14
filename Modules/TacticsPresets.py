@@ -56,7 +56,7 @@ res = 2,
 agi = 2,
 skl = 3,
 mov = -1,
-abilities = [punch],
+abilities = [],
 growthRates = [0.2, 0.2, 0.2, 0.2, 0.3, 0.1, 0.2, 0.2]
 )
 
