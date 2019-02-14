@@ -7,9 +7,13 @@ exampleJob = TacticsClasses.Job("example", 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.
 
 # REMEMBER:
 # health, mana, pAtk, mAtk, dfce, res, agi, skl, mov, abilities, growthRates
+# Only special jobs (mounted) should have a mov stat above 0
+
+# Base Stat Priority:
+# Base > Job > Race
 
 # Growth Rate Priority:
-# Base > Race > Job
+# Base > Job = Race
 
 # Abilities
 # Physical
@@ -26,6 +30,22 @@ range = 1
 # Races
 human = TacticsClasses.Race(
 name = "Human",
+maxHealth = 3,
+maxMana = 3,
+pAtk = 2,
+mAtk = 2,
+dfce = 4,
+res = 1,
+agi = 1,
+skl = 2,
+mov = 2,
+abilities = [punch],
+growthRates = [0.2, 0.2, 0.2, 0.2, 0.3, 0.1, 0.2, 0.2]
+)
+
+# Jobs
+knight = TacticsClasses.Job(
+name = "Knight",
 maxHealth = 5,
 maxMana = 5,
 pAtk = 3,
@@ -34,7 +54,7 @@ dfce = 5,
 res = 2,
 agi = 2,
 skl = 3,
-mov = 2,
+mov = -1,
 abilities = [punch],
 growthRates = [0.2, 0.2, 0.2, 0.2, 0.3, 0.1, 0.2, 0.2]
 )
