@@ -25,6 +25,9 @@ unit1 = TacticsClasses.Person("1", TacticsPresets.exampleJob, TacticsPresets.exa
 units = []
 units += [unit1]
 
+action = tacticsfunctions.Actions.SELECT
+selected = None
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -42,7 +45,17 @@ while True:
                 selected = "h"
             if event.key == pygame.K_0:
                 selected = "0"
-        # if event.type == pygame.MOUSEBUTTONDOWN:
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            location = [event.pos[0]-area[0]*100)//100, event.pos[1]-area[1]*100)//100]
+            if action == tacticsfunctions.Actions.SELECT:
+                for i in units:
+                    if (i.location[0] == location[0]) and (i.location[1] == location[1]):
+                        selected = i
+                        action = tacticsfunctions.Actions.MOVE
+                        break
+            elif action == tacticsfunctions.Actions.MOVE:
+                tacticsfunctions.move(selected, location)
+                action = tacticsfunctions.Actions.SELECT
 
     screen.fill(white)
     # screen.fill((black), box)

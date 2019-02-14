@@ -36,7 +36,8 @@ while True:
             if event.key == pygame.K_0:
                 selected = "0"
         if event.type == pygame.MOUSEBUTTONDOWN:
-            grid[int((event.pos[1]-area[1]*100)//100)][int((event.pos[0]-area[0]*100)//100)] = selected
+            location = [event.pos[0]-area[0]*100)//100, event.pos[1]-area[1]*100)//100]
+            grid[int(location[0])][int(location[1])] = selected
             # print((event.pos[0]-area[0]*100)//100)
 
     screen.fill(white)
