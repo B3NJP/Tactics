@@ -118,12 +118,14 @@ class Ability:
         self.special = special
 
     def use(self, parent, target, units, enemies, gridTiles): # gridTiles is an array of both the grid and tiles
-        if self.special:
-            exec(self.special)
-        else:
-            for i in enemies:
-                if i.location in target:
-                    i.loseHealth(self, parent, gridTiles)
+        if parent.mana >= self.mpCost:
+            parent.mana -= self.mpCost
+            if self.special:
+                exec(self.special)
+            else:
+                for i in enemies:
+                    if i.location in target:
+                        i.loseHealth(self, parent, gridTiles)
 
 
 class Job:
