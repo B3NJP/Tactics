@@ -8,6 +8,7 @@ class Person:
 
         self.maxHealth = stats[0]
         self.health = self.maxHealth
+        print(stats[0])
 
         self.maxMana = stats[1]
         self.mana = self.maxMana
@@ -49,17 +50,17 @@ class Person:
 
     def loseHealth(self, ability, user, gridTiles):
         hitchance = random.random()
-        hitrate = ((ability.skl + user.getStat("skl")) * ability.sklMulti * 1.5) - (self.getStat("agi") * 1.5)
+        hitrate = ((ability.skl + user.getStat("skl", gridTiles)) * ability.sklMulti * 1.5) - (self.getStat("agi", gridTiles) * 1.5)
         if hitchance <= hitrate/100:
             damage = ability.baseDmg
-            if dmgType == "physical":
-                damage += user.getStat("pAtk")
+            if ability.dmgType == "physical":
+                damage += user.getStat("pAtk", gridTiles)
                 damage *= ability.multi
-                damage -= self.getStat("dfce")
-            elif dmgType == "magic":
-                damage += user.getStat("mAtk")
+                damage -= self.getStat("dfce", gridTiles)
+            elif ability.dmgType == "magic":
+                damage += user.getStat("mAtk", gridTiles)
                 damage *= ability.multi
-                damage -= self.getStat("res")
+                damage -= self.getStat("res", gridTiles)
 
             self.health -= max(damage, 0)
             print(self.name)
@@ -80,8 +81,8 @@ class Person:
 
         return val
 
-    # def getAbilities(self):
-    #     return self.a
+    def getAbilities(self):
+        return self.abilities + self.job.abilities + self.race.abilities
 
 
 class Ability:
@@ -103,12 +104,13 @@ class Ability:
         self.cooldown = cooldown
         self.special = special
 
-    def use(self, parent, targets, units, enemies, gridTiles): # gridTiles is an array of both the grid and tiles
+    def use(self, parent, target, units, enemies, gridTiles): # gridTiles is an array of both the grid and tiles
         if self.special:
             exec(self.special)
         else:
-            for i in targets:
-                i.loseHealth(self, parent)
+            for i in enemies:
+                if i.location in target:
+                    i.loseHealth(self, parent, gridTiles)
 
 
 class Job:

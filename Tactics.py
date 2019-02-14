@@ -32,7 +32,7 @@ p2 = pygame.transform.scale(pygame.image.load("Assets/Tiles/P2.png"), box)
 
 # Creates Units
 # name, job, race, stats, growthRates, location = [0,0], abilities = [], weapon = None, items = []
-unit1 = TacticsClasses.Person("1", TacticsPresets.knight, TacticsPresets.human, [10, 10, 10, 10, 10, 10, 10, 10, 5], [.3, .3, .3, .3, .3, .3, .3, .3])
+unit1 = TacticsClasses.Person("1", TacticsPresets.knight, TacticsPresets.human, [20, 20, 20, 20, 20, 20, 20, 20, 5], [.3, .3, .3, .3, .3, .3, .3, .3])
 
 units = []
 units += [unit1]
@@ -49,6 +49,11 @@ selected = None # Selected Unit
 # Area selected unit can move to
 moveTo = []
 
+# Unit's abilities
+usableAbilities = []
+targets = []
+abilityUsed = 0
+
 while True:
     # Gets events
     for event in pygame.event.get():
@@ -57,23 +62,37 @@ while True:
         if event.type == pygame.KEYDOWN:
 
             # Scroll screen around
-            if event.key == pygame.K_UP:
-                area[1] += .2
-            if event.key == pygame.K_RIGHT:
-                area[0] -= .2
-            if event.key == pygame.K_DOWN:
-                area[1] -= .2
-            if event.key == pygame.K_LEFT:
-                area[0] += .2
+            if action != tacticsfunctions.Actions.ABILITY:
+                if event.key == pygame.K_UP:
+                    area[1] += .2
+                if event.key == pygame.K_RIGHT:
+                    area[0] -= .2
+                if event.key == pygame.K_DOWN:
+                    area[1] -= .2
+                if event.key == pygame.K_LEFT:
+                    area[0] += .2
+            else:
+                if event.key == pygame.K_UP and abilityUsed > 0:
+                    abilityUsed -= 1
+                    targets = []
+                if event.key == pygame.K_DOWN and abilityUsed < len(usableAbilities)-1:
+                    abilityUsed += 1
+                    targets = []
 
             # Choose action
             if action == tacticsfunctions.Actions.CHOOSE:
+                if event.key == pygame.K_s:
+                    action = tacticsfunctions.Actions.SELECT
+
                 if event.key == pygame.K_m:
                     action = tacticsfunctions.Actions.MOVE
                     moveTo = tacticsfunctions.moveAble(selected, grid, tiles) # Shows where unit can be moved to
 
-                if event.key == pygame.K_s:
-                    action = tacticsfunctions.Actions.SELECT
+                if event.key == pygame.K_a:
+                    action = tacticsfunctions.Actions.ABILITY
+                    usableAbilities = selected.getAbilities()
+                    targets = []
+                    abilityUsed = 0
 
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: # Mouse buttons
 
@@ -85,10 +104,19 @@ while True:
                         selected = i
                         action = tacticsfunctions.Actions.CHOOSE
                         break
+
             elif action == tacticsfunctions.Actions.MOVE: # Move Unit
                 if location in moveTo:
                     tacticsfunctions.move(selected, location)
                     action = tacticsfunctions.Actions.SELECT
+
+            elif action == tacticsfunctions.Actions.ABILITY:
+                targets += [location]
+                if len(targets) >= usableAbilities[abilityUsed].targets:
+                    usableAbilities[abilityUsed].use(selected, targets, units, enemies, [grid, tiles])
+                    action = tacticsfunctions.Actions.SELECT
+
+
 
     screen.fill(white) # Makes the screen white
 
@@ -101,6 +129,16 @@ while True:
                         if [j, i] in moveTo:
                             # Adjusts size of rectangle to fit in the correct spot
                             screen.fill((0, 0, 255), [max((j+area[0])*100, 0), max((i+area[1])*100, 0)] + [min((area[0] + j + 1)*100, 100), min((area[1] + i + 1)*100, 100)])
+
+    # Shows selected targets
+    if action == tacticsfunctions.Actions.ABILITY:
+        for i in range(0, len(grid)):
+            for j in range(0, len(grid[i])):
+                if ((i+area[1])*100 < 700 and (i+area[1])*100 > -100): # If the spot is within the selected area
+                    if ((j+area[0])*100 < 700 and (j+area[0])*100 > -100): # If the spot is within the selected area
+                        if [j, i] in targets:
+                            # Adjusts size of rectangle to fit in the correct spot
+                            screen.fill((255, 0, 0), [max((j+area[0])*100, 0), max((i+area[1])*100, 0)] + [min((area[0] + j + 1)*100, 100), min((area[1] + i + 1)*100, 100)])
 
     # Draws grid
     for i in range(0, len(grid)):

@@ -6,9 +6,10 @@ def move(person, location):
     person.location[1] = location[1]
 
 class Actions(Enum):
-    MOVE = auto()
-    SELECT = auto()
     CHOOSE = auto()
+    SELECT = auto()
+    MOVE = auto()
+    ABILITY = auto()
 
 def moveAble(person, grid, tiles):
     queue = [[person.location, person.mov]]
