@@ -62,6 +62,9 @@ class Person:
                 damage -= self.getStat("res")
 
             self.health -= max(damage, 0)
+            print(self.name)
+            print(self.health)
+            print(damage)
             return damage
 
     def getStat(self, stat, gridTiles):
@@ -76,6 +79,9 @@ class Person:
                     break
 
         return val
+
+    # def getAbilities(self):
+    #     return self.a
 
 
 class Ability:

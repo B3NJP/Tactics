@@ -1,9 +1,9 @@
-import random
+import math, random
 from Modules import TacticsClasses
 
 #examples
-exampleRace = TacticsClasses.Race("example", 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, [], [])
-exampleJob = TacticsClasses.Job("example", 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, [], [])
+# exampleRace = TacticsClasses.Race("example", 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, [], [])
+# exampleJob = TacticsClasses.Job("example", 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, [], [])
 # exampleAbility = TacticsClasses.Ability(name = "example", type = "magic", range = 20, dmg = 4, dmgType = "mAtk", mpCost = 2)
 
 # REMEMBER:
@@ -62,7 +62,7 @@ growthRates = [0.2, 0.2, 0.2, 0.2, 0.3, 0.1, 0.2, 0.2]
 
 class humanKnightTemplateUnit(TacticsClasses.Person):
     def __init__(self, name, location = [0,0], abilities = [], weapon = None, items = []):
-        super().__init__(name, knight, human, [floor(random.random * 10) for i in range(0,8)], [(floor(random.random * 4)/10) for i in range(0,8)], location, abilities, weapon, items)
+        super().__init__(name, knight, human, [math.floor(random.random() * 10) for i in range(0,8)] + [3], [(math.floor(random.random() * 4)/10) for i in range(0,8)], location, abilities, weapon, items)
 
 
 # Tiles

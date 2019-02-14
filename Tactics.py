@@ -28,13 +28,19 @@ TacticsPresets.hill
 
 # Gets Unit Image
 p1 = pygame.transform.scale(pygame.image.load("Assets/Tiles/P1.png"), box)
+p2 = pygame.transform.scale(pygame.image.load("Assets/Tiles/P2.png"), box)
 
 # Creates Units
 # name, job, race, stats, growthRates, location = [0,0], abilities = [], weapon = None, items = []
-unit1 = TacticsClasses.Person("1", TacticsPresets.exampleJob, TacticsPresets.exampleRace, [10, 10, 10, 10, 10, 10, 10, 10, 5], [10, 10, 10, 10, 10, 10, 10, 10])
+unit1 = TacticsClasses.Person("1", TacticsPresets.knight, TacticsPresets.human, [10, 10, 10, 10, 10, 10, 10, 10, 5], [.3, .3, .3, .3, .3, .3, .3, .3])
 
 units = []
 units += [unit1]
+
+enemy1 = TacticsPresets.humanKnightTemplateUnit("2", [3, 4])
+
+enemies = []
+enemies += [enemy1]
 
 # Creates Action choice
 action = tacticsfunctions.Actions.SELECT
@@ -112,6 +118,9 @@ while True:
     # Draws units
     for i in units:
         screen.blit(p1, [(i.location[0]+area[0])*100, (i.location[1]+area[1])*100])
+
+    for i in enemies:
+        screen.blit(p2, [(i.location[0]+area[0])*100, (i.location[1]+area[1])*100])
 
     # Draws everything to screen
     pygame.display.flip()
