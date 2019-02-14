@@ -1,8 +1,8 @@
-import MagicClasses
+import TacticsClasses
 
 #examples
-exampleRace = MagicClasses.Race("example", 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, [])
-exampleJob = MagicClasses.Job("example", 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, [])
+exampleRace = MagicClasses.Race("example", 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, [], [])
+exampleJob = MagicClasses.Job("example", 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, [], [])
 exampleAbility = MagicClasses.Ability(name = "example", type = "magic", range = 20, dmg = 4, dmgType = "mAtk", mpCost = 2)
 
 # REMEMBER:

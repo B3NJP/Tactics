@@ -21,6 +21,8 @@ class Person:
         self.agi = stats[6]
         self.skl = stats[7]
 
+        self.mov = stats[8]
+
         self.location = location
 
         self.level = 1
