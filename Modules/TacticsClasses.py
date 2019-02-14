@@ -47,7 +47,7 @@ class Person:
         self.agi += math.floor(random.random() + self.growthRates[6] + self.race.growthRates[6] + self.job.growthRates[6])
         self.skl += math.floor(random.random() + self.growthRates[7] + self.race.growthRates[7] + self.job.growthRates[7])
 
-    def loseHealth(self, ability, user):
+    def loseHealth(self, ability, user, gridTiles):
         hitchance = random.random()
         hitrate = ((ability.skl + user.getStat("skl")) * ability.sklMulti * 1.5) - (self.getStat("agi") * 1.5)
         if hitchance <= hitrate/100:
@@ -64,11 +64,16 @@ class Person:
             self.health -= max(damage, 0)
             return damage
 
-    def getStat(self, stat):
+    def getStat(self, stat, gridTiles):
         val = 0
         val += getattr(self, stat) + getattr(self.job, stat) + getattr(self.race, stat)
         if self.weapon:
             val += getattr(self.weapon, stat)
+        if stat == "dfce" or stat == "res":
+            for i in gridTiles[1]:
+                if gridTiles[0][self.location[1]][self.location[0]] == i.key:
+                    val += getattr(i, stat)
+                    break
 
         return val
 
@@ -92,7 +97,7 @@ class Ability:
         self.cooldown = cooldown
         self.special = special
 
-    def use(self, parent, targets, units, enemies):
+    def use(self, parent, targets, units, enemies, gridTiles): # gridTiles is an array of both the grid and tiles
         if self.special:
             exec(self.special)
         else:
