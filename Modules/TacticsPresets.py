@@ -1,3 +1,4 @@
+import random
 from Modules import TacticsClasses
 
 #examples
@@ -59,7 +60,10 @@ abilities = [punch],
 growthRates = [0.2, 0.2, 0.2, 0.2, 0.3, 0.1, 0.2, 0.2]
 )
 
-# class humanTemplateUnit(TacticsClasses.Person):
+class humanKnightTemplateUnit(TacticsClasses.Person):
+    def __init__(self, name, location = [0,0], abilities = [], weapon = None, items = []):
+        super().__init__(name, knight, human, [floor(random.random * 10) for i in range(0,8)], [(floor(random.random * 4)/10) for i in range(0,8)], location, abilities, weapon, items)
+
 
 # Tiles
 plain = TacticsClasses.Tile("plain", "0", 0, 0, 1, "Assets/Tiles/plains.png")
