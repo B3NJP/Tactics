@@ -115,10 +115,11 @@ while True:
                     action = tacticsfunctions.Actions.SELECT
 
             elif action == tacticsfunctions.Actions.ABILITY:
-                targets += [location]
-                if len(targets) >= usableAbilities[abilityUsed].targets:
-                    usableAbilities[abilityUsed].use(selected, targets, units, enemies, [grid, tiles])
-                    action = tacticsfunctions.Actions.SELECT
+                if location in usableRange:
+                    targets += [location]
+                    if len(targets) >= usableAbilities[abilityUsed].targets:
+                        usableAbilities[abilityUsed].use(selected, targets, units, enemies, [grid, tiles])
+                        action = tacticsfunctions.Actions.SELECT
 
 
 
