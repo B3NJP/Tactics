@@ -53,6 +53,7 @@ moveTo = []
 usableAbilities = []
 targets = []
 abilityUsed = 0
+usableRange = []
 
 while True:
     # Gets events
@@ -75,9 +76,11 @@ while True:
                 if event.key == pygame.K_UP and abilityUsed > 0:
                     abilityUsed -= 1
                     targets = []
+                    usableRange = tacticsfunctions.usableArea(selected, usableAbilities[abilityUsed], grid, tiles)
                 if event.key == pygame.K_DOWN and abilityUsed < len(usableAbilities)-1:
                     abilityUsed += 1
                     targets = []
+                    usableRange = tacticsfunctions.usableArea(selected, usableAbilities[abilityUsed], grid, tiles)
 
             # Choose action
             if action == tacticsfunctions.Actions.CHOOSE:
@@ -93,6 +96,7 @@ while True:
                     usableAbilities = selected.getAbilities()
                     targets = []
                     abilityUsed = 0
+                    usableRange = tacticsfunctions.usableArea(selected, usableAbilities[abilityUsed], grid, tiles)
 
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: # Mouse buttons
 
@@ -130,7 +134,7 @@ while True:
                             # Adjusts size of rectangle to fit in the correct spot
                             screen.fill((0, 0, 255), [max((j+area[0])*100, 0), max((i+area[1])*100, 0)] + [min((area[0] + j + 1)*100, 100), min((area[1] + i + 1)*100, 100)])
 
-    # Shows selected targets
+    # Shows selected targets and ability range
     if action == tacticsfunctions.Actions.ABILITY:
         for i in range(0, len(grid)):
             for j in range(0, len(grid[i])):
@@ -139,6 +143,10 @@ while True:
                         if [j, i] in targets:
                             # Adjusts size of rectangle to fit in the correct spot
                             screen.fill((255, 0, 0), [max((j+area[0])*100, 0), max((i+area[1])*100, 0)] + [min((area[0] + j + 1)*100, 100), min((area[1] + i + 1)*100, 100)])
+                        elif [j, i] in usableRange:
+                            # Adjusts size of rectangle to fit in the correct spot
+                            screen.fill((200, 0, 0), [max((j+area[0])*100, 0), max((i+area[1])*100, 0)] + [min((area[0] + j + 1)*100, 100), min((area[1] + i + 1)*100, 100)])
+
 
     # Draws grid
     for i in range(0, len(grid)):
@@ -157,6 +165,7 @@ while True:
     for i in units:
         screen.blit(p1, [(i.location[0]+area[0])*100, (i.location[1]+area[1])*100])
 
+    # Draw enemies
     for i in enemies:
         screen.blit(p2, [(i.location[0]+area[0])*100, (i.location[1]+area[1])*100])
 

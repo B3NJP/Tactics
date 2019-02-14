@@ -39,5 +39,28 @@ def moveAble(person, grid, tiles):
 
     return moveTo
 
+def usableArea(person, ability, grid, tiles):
+    queue = [[person.location, ability.range]]
+    usableRange = []
+    while queue:
+        current = queue.pop(0)
+        usableRange += [current[0]]
+        potential = []
+
+        potential += [
+        [current[0][0]+1, current[0][1]],
+        [current[0][0]-1, current[0][1]],
+        [current[0][0], current[0][1]+1],
+        [current[0][0], current[0][1]-1]
+        ]
+
+        for i in potential:
+            if not i in usableRange:
+                if (i[1] >= 0 and i[1] < len(grid)) and (i[0] >= 0 and i[0] < len(grid[i[1]])):
+                    if current[1] - 1 >= 0:
+                        queue += [[i, current[1] - 1]]
+
+    return usableRange
+
 def end():
     sys.exit()
