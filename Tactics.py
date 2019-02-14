@@ -1,4 +1,4 @@
-import sys, pygame, fileinput
+import sys, pygame, fileinput, copy
 from Modules import TacticsClasses, TacticsPresets, tacticsfunctions
 pygame.init()
 
@@ -35,16 +35,18 @@ font = pygame.font.Font(None, 25)
 
 # Creates Units
 # name, job, race, stats, growthRates, location = [0,0], abilities = [], weapon = None, items = []
-unit1 = TacticsClasses.Person("1", TacticsPresets.knight, TacticsPresets.human, [20, 20, 20, 20, 20, 20, 20, 20, 5], [.3, .3, .3, .3, .3, .3, .3, .3])
+unit1 = copy.deepcopy(TacticsClasses.Person("1", TacticsPresets.knight, TacticsPresets.human, [20, 20, 20, 20, 20, 20, 20, 20, 5], [.3, .3, .3, .3, .3, .3, .3, .3]))
 
 units = []
 units += [unit1]
+deadUnits = []
 
 # Creates Enemies
-enemy1 = TacticsPresets.humanKnightTemplateUnit("2", [3, 4])
+enemy1 = copy.deepcopy(TacticsPresets.humanKnightTemplateUnit("2", [3, 4]))
 
 enemies = []
 enemies += [enemy1]
+deadEnemies = []
 
 # Creates Action choice
 action = tacticsfunctions.Actions.SELECT
@@ -99,7 +101,7 @@ while True:
 
                 if event.key == pygame.K_m:
                     action = tacticsfunctions.Actions.MOVE
-                    moveTo = tacticsfunctions.moveAble(selected, grid, tiles) # Shows where unit can be moved to
+                    moveTo = tacticsfunctions.moveAble(selected, grid, enemies, tiles) # Shows where unit can be moved to
 
                 if event.key == pygame.K_a:
                     action = tacticsfunctions.Actions.ABILITY
@@ -129,6 +131,7 @@ while True:
                     targets += [location]
                     if len(targets) >= usableAbilities[abilityUsed].targets:
                         usableAbilities[abilityUsed].use(selected, targets, units, enemies, [grid, tiles])
+                        tacticsfunctions.nextTurn(units, enemies, deadUnits, deadEnemies)
                         action = tacticsfunctions.Actions.SELECT
 
 

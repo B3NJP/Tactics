@@ -11,7 +11,7 @@ class Actions(Enum):
     MOVE = auto()
     ABILITY = auto()
 
-def moveAble(person, grid, tiles):
+def moveAble(person, grid, enemies, tiles):
     queue = [[person.location, person.mov]]
     moveTo = []
     while queue:
@@ -27,15 +27,16 @@ def moveAble(person, grid, tiles):
         ]
 
         for i in potential:
-            if not i in moveTo:
-                if (i[1] >= 0 and i[1] < len(grid)) and (i[0] >= 0 and i[0] < len(grid[i[1]])):
-                    tempTile = None
-                    for j in tiles:
-                        if grid[i[1]][i[0]] == j.key:
-                            tempTile = j
-                            break
-                    if current[1] - tempTile.mov >= 0:
-                        queue += [[i, current[1] - tempTile.mov]]
+            if (i[1] >= 0 and i[1] < len(grid)) and (i[0] >= 0 and i[0] < len(grid[i[1]])):
+                if not i in moveTo:
+                    if not i in [j.location for j in enemies]:
+                        tempTile = None
+                        for j in tiles:
+                            if grid[i[1]][i[0]] == j.key:
+                                tempTile = j
+                                break
+                        if current[1] - tempTile.mov >= 0:
+                            queue += [[i, current[1] - tempTile.mov]]
 
     return moveTo
 
@@ -61,6 +62,21 @@ def usableArea(person, ability, grid, tiles):
                         queue += [[i, current[1] - 1]]
 
     return usableRange
+
+def nextTurn(units, enemies, deadUnits, deadEnemies):
+    for i in units:
+        if i.health <= 0:
+            deadUnits += [i]
+    for i in enemies:
+        if i.health <= 0:
+            deadEnemies += [i]
+
+    for i in deadUnits:
+        if i in units:
+            units.remove(i)
+    for i in deadEnemies:
+        if i in enemies:
+            enemies.remove(i)
 
 def end():
     sys.exit()
