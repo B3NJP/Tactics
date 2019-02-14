@@ -79,7 +79,7 @@ class Person:
 
 
 class Ability:
-    def __init__(self, name, type, dmgType, range = 0, targets = 1, baseDmg = 0, multi = 1, skl = 0, sklMulti = 1, mpCost = 0, cooldown = 0, special = None):
+    def __init__(self, name, type, dmgType, range = 1, targets = 1, baseDmg = 0, multi = 1, skl = 0, sklMulti = 1, mpCost = 0, cooldown = 0, special = None):
         self.name = name
         self.type = type
 
@@ -106,10 +106,10 @@ class Ability:
 
 
 class Job:
-    def __init__(self, name, health, mana, pAtk, mAtk, dfce, res, agi, skl, abilities, growthRates):
+    def __init__(self, name, maxHealth, maxMana, pAtk, mAtk, dfce, res, agi, skl, mov, abilities, growthRates):
         self.name = name
-        self.health = health
-        self.mana = mana
+        self.maxhealth = maxHealth
+        self.maxMana = maxMana
 
         self.pAtk = pAtk
         self.mAtk = mAtk
@@ -119,16 +119,17 @@ class Job:
 
         self.agi = agi
         self.skl = skl
+        self.mov = mov
 
         self.abilities = abilities
 
         self.growthRates = growthRates
 
 class Race:
-    def __init__(self, name, health, mana, pAtk, mAtk, dfce, res, agi, skl, abilities, growthRates):
+    def __init__(self, name, maxHealth, maxMana, pAtk, mAtk, dfce, res, agi, skl, mov, abilities, growthRates):
         self.name = name
-        self.health = health
-        self.mana = mana
+        self.maxHealth = maxHealth
+        self.maxMana = maxMana
 
         self.pAtk = pAtk
         self.mAtk = mAtk
@@ -138,6 +139,7 @@ class Race:
 
         self.agi = agi
         self.skl = skl
+        self.mov = mov
 
         self.abilities = abilities
         self.growthRates = growthRates
