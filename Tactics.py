@@ -190,13 +190,13 @@ while True:
     if action == tacticsfunctions.Actions.ABILITY:
         screen.fill(white, [0, 700-len(usableAbilities)*50, 400, len(usableAbilities)*50+50])
         pygame.draw.rect(screen, black, [0, 700-len(usableAbilities)*50, 400, len(usableAbilities)*50+50], 1)
-        spot = 25
+        spot = len(usableAbilities)*50-25
         for i in usableAbilities:
             if i == usableAbilities[abilityUsed]:
                 screen.blit(font.render(i.name, True, (255, 0, 0)), [10, 700-spot])
             else:
                 screen.blit(font.render(i.name, True, black), [10, 700-spot])
-            spot += 50
+            spot -= 50
 
     # Draws everything to screen
     pygame.display.flip()

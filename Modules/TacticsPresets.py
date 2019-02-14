@@ -25,6 +25,17 @@ dmgType = "physical",
 range = 1
 )
 # Spells
+warp = TacticsClasses.Ability(
+name = "Warp",
+type = "teleport",
+dmgType = "None",
+range = 20,
+baseDmg = 0,
+multi = 0,
+mpCost = 3,
+special =
+"parent.location = copy.deepcopy(target[0])"
+)
 # fireball = TacticsClasses.Ability(name = "fireball", type = "magic", range = 20, dmg = 3, dmgType = "mAtk", mpCost = 1)
 # lightning = TacticsClasses.Ability(name = "lightning", type = "magic", range = 30, dmg = 5, dmgType = "mAtk", mpCost = 3)
 
@@ -56,7 +67,7 @@ res = 2,
 agi = 2,
 skl = 3,
 mov = -1,
-abilities = [],
+abilities = [warp],
 growthRates = [0.2, 0.2, 0.2, 0.2, 0.3, 0.1, 0.2, 0.2]
 )
 

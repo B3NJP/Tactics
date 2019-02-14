@@ -1,4 +1,4 @@
-import math, random, pygame
+import math, random, pygame, copy
 
 class Person:
     def __init__(self, name, job, race, stats, growthRates, location = [0,0], abilities = [], weapon = None, items = []):
