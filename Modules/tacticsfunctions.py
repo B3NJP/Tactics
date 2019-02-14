@@ -8,6 +8,7 @@ def move(person, location):
 class Actions(Enum):
     MOVE = auto()
     SELECT = auto()
+    CHOOSE = auto()
 
 def moveAble(person, grid, tiles):
     queue = [[person.location, person.mov]]
@@ -36,8 +37,6 @@ def moveAble(person, grid, tiles):
                         queue += [[i, current[1] - tempTile.mov]]
 
     return moveTo
-
-
 
 def end():
     sys.exit()
