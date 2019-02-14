@@ -34,19 +34,19 @@ while True:
             mapcreatorfunctions.end(grid)
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
-                area[1] -= .2
-            if event.key == pygame.K_RIGHT:
-                area[0] += .2
-            if event.key == pygame.K_DOWN:
                 area[1] += .2
-            if event.key == pygame.K_LEFT:
+            if event.key == pygame.K_RIGHT:
                 area[0] -= .2
+            if event.key == pygame.K_DOWN:
+                area[1] -= .2
+            if event.key == pygame.K_LEFT:
+                area[0] += .2
             if event.key == pygame.K_h:
                 selected = "h"
             if event.key == pygame.K_0:
                 selected = "0"
         if event.type == pygame.MOUSEBUTTONDOWN:
-            location = [event.pos[0]-area[0]*100)//100, event.pos[1]-area[1]*100)//100]
+            location = [(event.pos[0]-area[0]*100)//100, (event.pos[1]-area[1]*100)//100]
             if action == tacticsfunctions.Actions.SELECT:
                 for i in units:
                     if (i.location[0] == location[0]) and (i.location[1] == location[1]):

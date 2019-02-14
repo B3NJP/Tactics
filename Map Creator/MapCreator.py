@@ -24,20 +24,20 @@ while True:
             mapcreatorfunctions.end(grid)
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
-                area[1] -= .2
-            if event.key == pygame.K_RIGHT:
-                area[0] += .2
-            if event.key == pygame.K_DOWN:
                 area[1] += .2
-            if event.key == pygame.K_LEFT:
+            if event.key == pygame.K_RIGHT:
                 area[0] -= .2
+            if event.key == pygame.K_DOWN:
+                area[1] -= .2
+            if event.key == pygame.K_LEFT:
+                area[0] += .2
             if event.key == pygame.K_h:
                 selected = "h"
             if event.key == pygame.K_0:
                 selected = "0"
         if event.type == pygame.MOUSEBUTTONDOWN:
-            location = [event.pos[0]-area[0]*100)//100, event.pos[1]-area[1]*100)//100]
-            grid[int(location[0])][int(location[1])] = selected
+            location = [(event.pos[0]-area[0]*100)//100, (event.pos[1]-area[1]*100)//100]
+            grid[int(location[1])][int(location[0])] = selected
             # print((event.pos[0]-area[0]*100)//100)
 
     screen.fill(white)
