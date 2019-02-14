@@ -50,7 +50,7 @@ class Person:
 
     def loseHealth(self, ability, user, gridTiles):
         hitchance = random.random()
-        hitrate = ((ability.skl + user.getStat("skl", gridTiles)) * ability.sklMulti * 1.5) - (self.getStat("agi", gridTiles) * 1.5)
+        hitrate = ((ability.skl + user.getStat("skl", gridTiles)) * ability.sklMulti * 4) - (self.getStat("agi", gridTiles) * 4)
         if hitchance <= hitrate/100:
             damage = ability.baseDmg
             if ability.dmgType == "physical":

@@ -161,6 +161,9 @@ while True:
                             # Adjusts size of rectangle to fit in the correct spot
                             screen.fill((200, 0, 0), [max((j+area[0])*100, 0), max((i+area[1])*100, 0)] + [min((area[0] + j + 1)*100, 100), min((area[1] + i + 1)*100, 100)])
 
+    # Highlights selected unit
+    if action == tacticsfunctions.Actions.CHOOSE:
+        screen.fill((255, 175, 0), [max((selected.location[0]+area[0])*100, 0), max((selected.location[1]+area[1])*100, 0)] + [min((area[0] + selected.location[0] + 1)*100, 100), min((area[1] + selected.location[1] + 1)*100, 100)])
 
     # Draws grid
     for i in range(0, len(grid)):
@@ -183,6 +186,7 @@ while True:
     for i in enemies:
         screen.blit(p2, [(i.location[0]+area[0])*100, (i.location[1]+area[1])*100])
 
+    # Draws available actions
     if action == tacticsfunctions.Actions.ABILITY:
         screen.fill(white, [0, 700-len(usableAbilities)*50, 400, len(usableAbilities)*50+50])
         pygame.draw.rect(screen, black, [0, 700-len(usableAbilities)*50, 400, len(usableAbilities)*50+50], 1)
