@@ -68,6 +68,10 @@ while True:
             tacticsfunctions.end() # Ends program in terminal
         if event.type == pygame.KEYDOWN:
 
+            # Change back to SELECT
+            if event.key == pygame.K_ESCAPE:
+                action = tacticsfunctions.Actions.SELECT
+
             # Scroll screen around
             if action != tacticsfunctions.Actions.ABILITY:
                 if event.key == pygame.K_UP:
