@@ -47,37 +47,58 @@ class Person:
         self.agi += math.floor(random.random() + self.growthRates[6] + self.race.growthRates[6] + self.job.growthRates[6])
         self.skl += math.floor(random.random() + self.growthRates[7] + self.race.growthRates[7] + self.job.growthRates[7])
 
+    def loseHealth(self, ability, user):
+        hitchance = random.random()
+        hitrate = ((ability.skl + user.getStat("skl")) * ability.sklMulti * 1.5) - (self.getStat("agi") * 1.5)
+        if hitchance <= hitrate/100:
+            damage = ability.baseDmg
+            if dmgType == "physical":
+                damage += user.getStat("pAtk")
+                damage *= ability.multi
+                damage -= self.getStat("dfce")
+            elif dmgType == "magic":
+                damage += user.getStat("mAtk")
+                damage *= ability.multi
+                damage -= self.getStat("res")
+
+            self.health -= max(damage, 0)
+            return damage
+
+    def getStat(self, stat):
+        val = 0
+        val += getattr(self, stat) + getattr(self.job, stat) + getattr(self.race, stat)
+        if self.weapon:
+            val += getattr(self.weapon, stat)
+
+        return val
+
 
 class Ability:
-    def __init__(self, name, type, dmgType, range = 0, dmg = 0, multi = 1, target = "single", sklMulti = 1, mpCost = 0, cooldown = 0, special = None):
+    def __init__(self, name, type, dmgType, range = 0, targets = 1, baseDmg = 0, multi = 1, skl = 0, sklMulti = 1, mpCost = 0, cooldown = 0, special = None):
         self.name = name
         self.type = type
-        self.range = range
-
-        self.dmg = dmg
-        self.multi = multi
-        self.target = target
-
-        self.sklMulti = sklMulti
 
         self.dmgType = dmgType
+        self.range = range
+        self.targets = 1
+
+        self.baseDmg = baseDmg
+        self.multi = multi
+
+        self.skl = skl
+        self.sklMulti = sklMulti
+
         self.mpCost = mpCost
+        self.cooldown = cooldown
         self.special = special
 
-    def __call__(self, atk, location, people, skl, mana, specialValues = []):
-        if mana-self.mpCost >= 0:
-            targets = [i for i in people if i.location == location]
-            if self.dmgType == "special":
-                self.special(specialValues, targets)
-            else:
-                damage = self.dmg + atk * self.multi
-                for i in targets:
-                    i.hpLoss(damage, self.dmgType, skl*self.sklMulti)
-                    if self.special:
-                        self.special(specialValues, i)
-            return mana-self.mpCost
+    def use(self, parent, targets, units, enemies):
+        if self.special:
+            exec(self.special)
         else:
-            return mana
+            for i in targets:
+                i.loseHealth(self, parent)
+
 
 class Job:
     def __init__(self, name, health, mana, pAtk, mAtk, dfce, res, agi, skl, abilities, growthRates):
@@ -134,7 +155,7 @@ class Tile:
     def __init__(self, name, key, dfce, res, mov, img):
         self.name = name
         self.key = key
-        
+
         self.dfce = dfce
         self.res = res
         self.mov = mov

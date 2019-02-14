@@ -3,7 +3,7 @@ from Modules import TacticsClasses
 #examples
 exampleRace = TacticsClasses.Race("example", 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, [], [])
 exampleJob = TacticsClasses.Job("example", 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, [], [])
-exampleAbility = TacticsClasses.Ability(name = "example", type = "magic", range = 20, dmg = 4, dmgType = "mAtk", mpCost = 2)
+# exampleAbility = TacticsClasses.Ability(name = "example", type = "magic", range = 20, dmg = 4, dmgType = "mAtk", mpCost = 2)
 
 # REMEMBER:
 # health, mana, pAtk, mAtk, dfce, res, agi, skl, abilities
