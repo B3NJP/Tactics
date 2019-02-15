@@ -61,6 +61,8 @@ class Person:
                 damage += user.getStat("mAtk", gridTiles)
                 damage *= ability.multi
                 damage -= self.getStat("res", gridTiles)
+            else:
+                damage *= ability.multi
 
             self.health -= max(damage, 0)
             print(self.name)
