@@ -116,7 +116,7 @@ while True:
             location = [int((event.pos[0]-area[0]*100)//100), int((event.pos[1]-area[1]*100)//100)]
             if action == tacticsfunctions.Actions.SELECT: # Select Unit
                 for i in units:
-                    if (i.location[0] == location[0]) and (i.location[1] == location[1]):
+                    if (i.location == location):
                         selected = i
                         action = tacticsfunctions.Actions.CHOOSE
                         break
