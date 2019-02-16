@@ -24,10 +24,6 @@ screen = pygame.display.set_mode(size)
 tiles = []
 tiles += list(all["tile"].values())
 
-# Gets Unit Image
-p1 = pygame.transform.scale(pygame.image.load("Assets/Tiles/P1.png"), box)
-p2 = pygame.transform.scale(pygame.image.load("Assets/Tiles/P2.png"), box)
-
 # Text Font
 font = pygame.font.Font(None, 25)
 
@@ -36,14 +32,14 @@ font = pygame.font.Font(None, 25)
 # unit1 = copy.deepcopy(TacticsClasses.Person("1", TacticsPresets.knight, TacticsPresets.human, [20, 20, 20, 20, 20, 20, 20, 20, 5], [.3, .3, .3, .3, .3, .3, .3, .3]))
 
 units = []
-units += list(all["unit"])
+units += all["unit"]
 deadUnits = []
 
 # Creates Enemies
-enemy1 = copy.deepcopy(TacticsPresets.humanKnightTemplateUnit("2", [3, 4]))
+# enemy1 = copy.deepcopy(TacticsPresets.humanKnightTemplateUnit("2", [3, 4]))
 
 enemies = []
-enemies += [enemy1]
+enemies += all["enemy"]
 deadEnemies = []
 
 # Creates Action choice
@@ -178,11 +174,11 @@ while True:
 
     # Draws units
     for i in units:
-        screen.blit(p1, [(i.location[0]+area[0])*100, (i.location[1]+area[1])*100])
+        screen.blit(i.img, [(i.location[0]+area[0])*100, (i.location[1]+area[1])*100])
 
     # Draw enemies
     for i in enemies:
-        screen.blit(p2, [(i.location[0]+area[0])*100, (i.location[1]+area[1])*100])
+        screen.blit(i.img, [(i.location[0]+area[0])*100, (i.location[1]+area[1])*100])
 
     # Draws available actions
     if action == tacticsfunctions.Actions.ABILITY:

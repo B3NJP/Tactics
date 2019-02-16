@@ -1,7 +1,7 @@
 import math, random, pygame, copy
 
 class Person:
-    def __init__(self, name, job, race, stats, growthRates, location = [0,0], abilities = [], weapon = None, items = []):
+    def __init__(self, name, job, race, stats, growthRates, location = [0,0], abilities = [], weapon = None, img = "Assets/Units/P1.png", items = []):
         self.name = name
         self.job = job
         self.race = race
@@ -34,6 +34,8 @@ class Person:
         self.abilities = abilities
 
         self.weapon = weapon
+
+        self.img = pygame.transform.scale(pygame.image.load(img), [100, 100])
 
         self.items = items
 
