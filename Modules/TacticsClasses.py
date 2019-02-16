@@ -87,15 +87,15 @@ class Person:
     def getAbilities(self):
         abilities = []
         for i in self.abilities:
-            if not i in abilities:
+            if not i in abilities and i.mpCost <= self.mana:
                 abilities += [i]
 
         for i in self.job.abilities:
-            if not i in abilities:
+            if not i in abilities and i.mpCost <= self.mana:
                 abilities += [i]
 
         for i in self.race.abilities:
-            if not i in abilities:
+            if not i in abilities and i.mpCost <= self.mana:
                 abilities += [i]
 
         return abilities
