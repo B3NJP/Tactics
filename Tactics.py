@@ -1,5 +1,5 @@
 import sys, pygame, fileinput, copy
-from Modules import TacticsClasses, TacticsPresets, tacticsfunctions
+from Modules import TacticsClasses, TacticsPresets, tacticsfunctions, xmlProcessing
 pygame.init()
 
 # Basic Values
@@ -10,7 +10,7 @@ white = 255, 255, 255
 
 area = [0, 0]
 
-
+all = xmlProcessing.All
 # Creates Grid
 grid = []
 
@@ -21,10 +21,8 @@ for line in fileinput.input():
 screen = pygame.display.set_mode(size)
 
 # Gets Tiles
-tiles = [
-TacticsPresets.plain,
-TacticsPresets.hill
-]
+tiles = []
+tiles += list(all["tile"].values())
 
 # Gets Unit Image
 p1 = pygame.transform.scale(pygame.image.load("Assets/Tiles/P1.png"), box)
@@ -35,10 +33,10 @@ font = pygame.font.Font(None, 25)
 
 # Creates Units
 # name, job, race, stats, growthRates, location = [0,0], abilities = [], weapon = None, items = []
-unit1 = copy.deepcopy(TacticsClasses.Person("1", TacticsPresets.knight, TacticsPresets.human, [20, 20, 20, 20, 20, 20, 20, 20, 5], [.3, .3, .3, .3, .3, .3, .3, .3]))
+# unit1 = copy.deepcopy(TacticsClasses.Person("1", TacticsPresets.knight, TacticsPresets.human, [20, 20, 20, 20, 20, 20, 20, 20, 5], [.3, .3, .3, .3, .3, .3, .3, .3]))
 
 units = []
-units += [unit1]
+units += list(all["unit"])
 deadUnits = []
 
 # Creates Enemies

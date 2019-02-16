@@ -1,5 +1,5 @@
-import TacticsClasses
 import xml.etree.ElementTree as ET
+from Modules import TacticsClasses
 
 def toDictionary(element):
     tDict = {}
@@ -34,7 +34,7 @@ All = {
 "tile": {}
 }
 
-tree = ET.parse()
+tree = ET.parse("Base.xml")
 root = tree.getroot()
 for i in root:
     for j in i:
