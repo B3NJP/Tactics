@@ -8,7 +8,6 @@ class Person:
 
         self.maxHealth = stats[0]
         self.health = self.maxHealth
-        print(stats[0])
 
         self.maxMana = stats[1]
         self.mana = self.maxMana
