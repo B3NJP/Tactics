@@ -16,8 +16,6 @@ def moveAble(person, grid, enemies, tiles):
     moveTo = []
     while queue:
         current = queue.pop(0)
-        if not current[0] in moveTo:
-            moveTo += [current[0]]
         potential = []
 
         potential += [
@@ -36,9 +34,17 @@ def moveAble(person, grid, enemies, tiles):
                             tempTile = j
                             break
                     if current[1] - tempTile.mov >= 0:
-                        queue += [[i, current[1] - tempTile.mov]]
+                        if not i in [j[0] for j in moveTo]:
+                            queue += [[i, current[1] - tempTile.mov]]
+                            moveTo += [[i, current[1] - tempTile.mov]]
+                        elif not i in [j[0] for j in moveTo if current[1] - tempTile.mov <= j[1]]:
+                            queue += [[i, current[1] - tempTile.mov]]
+                            for j in moveTo:
+                                if j[0] == i:
+                                    if current[1] - tempTile.mov > j[1]:
+                                        j[1] = current[1] - tempTile.mov
 
-    return moveTo
+    return [i[0] for i in moveTo]
 
 def usableArea(person, ability, grid, tiles):
     queue = [[person.location, ability.range]]
