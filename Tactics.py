@@ -117,7 +117,7 @@ while True:
 
             elif action == tacticsfunctions.Actions.MOVE: # Move Unit
                 if location in moveTo:
-                    tacticsfunctions.move(selected, location)
+                    tacticsfunctions.move(selected, location, grid, enemies, tiles)
                     action = tacticsfunctions.Actions.SELECT
 
             elif action == tacticsfunctions.Actions.ABILITY:

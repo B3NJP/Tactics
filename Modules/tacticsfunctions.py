@@ -1,15 +1,19 @@
 import sys
 from enum import Enum, auto
 
-def move(person, location):
-    person.location[0] = location[0]
-    person.location[1] = location[1]
+def move(person, location, grid, enemies, tiles):
+    if location in moveAble(person, grid, enemies, tiles):
+        person.location[0] = location[0]
+        person.location[1] = location[1]
 
 class Actions(Enum):
     CHOOSE = auto()
     SELECT = auto()
     MOVE = auto()
     ABILITY = auto()
+
+def distanceFrom(loc, loc2):
+    return abs(loc[0]-loc2[0]) + abs(loc[1]-loc2[1])
 
 def moveAble(person, grid, enemies, tiles):
     queue = [[person.location, person.mov]]
