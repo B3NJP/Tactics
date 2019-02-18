@@ -68,6 +68,10 @@ while True:
             if event.key == pygame.K_ESCAPE:
                 action = tacticsfunctions.Actions.SELECT
 
+            # Ends turn
+            if event.key == pygame.K_RETURN:
+                tacticsfunctions.nextTurn(units, enemies, deadUnits, deadEnemies, grid, tiles)
+
             # Scroll screen around
             if action != tacticsfunctions.Actions.ABILITY:
                 if event.key == pygame.K_UP:
@@ -125,7 +129,7 @@ while True:
                     targets += [location]
                     if len(targets) >= usableAbilities[abilityUsed].targets:
                         usableAbilities[abilityUsed].use(selected, targets, units, enemies, [grid, tiles])
-                        tacticsfunctions.nextTurn(units, enemies, deadUnits, deadEnemies)
+                        tacticsfunctions.checkDead(units, enemies, deadUnits, deadEnemies)
                         action = tacticsfunctions.Actions.SELECT
 
 

@@ -1,7 +1,8 @@
 import math, random, pygame, copy
+from Modules import tacticsfunctions
 
 class Person:
-    def __init__(self, name, job, race, stats, growthRates, location = [0,0], abilities = [], weapon = None, img = "Assets/Units/P1.png", items = []):
+    def __init__(self, name, job, race, stats, growthRates, img, ai, location = [0,0], abilities = [], weapon = None, items = []):
         self.name = name
         self.job = job
         self.race = race
@@ -23,6 +24,9 @@ class Person:
 
         self.mov = stats[8]
 
+        self.img = pygame.transform.scale(pygame.image.load(img), [100, 100])
+        self.ai = ai
+
         self.location = location
 
         self.level = 1
@@ -33,8 +37,6 @@ class Person:
         self.abilities = abilities
 
         self.weapon = weapon
-
-        self.img = pygame.transform.scale(pygame.image.load(img), [100, 100])
 
         self.items = items
 
@@ -102,11 +104,12 @@ class Person:
 
 
 class Ability:
-    def __init__(self, name, type, dmgType, range = 1, targets = 1, baseDmg = 0, multi = 1, skl = 0, sklMulti = 1, mpCost = 0, cooldown = 0, special = None):
+    def __init__(self, name, type, dmgType, minRange = 0, range = 1, targets = 1, baseDmg = 0, multi = 1, skl = 0, sklMulti = 1, mpCost = 0, cooldown = 0, special = None):
         self.name = name
         self.type = type
 
         self.dmgType = dmgType
+        self.minRange = minRange
         self.range = range
         self.targets = 1
 
@@ -122,13 +125,14 @@ class Ability:
 
     def use(self, parent, target, units, enemies, gridTiles): # gridTiles is an array of both the grid and tiles
         if parent.mana >= self.mpCost:
-            parent.mana -= self.mpCost
-            if self.special:
-                exec(self.special)
-            else:
-                for i in enemies:
-                    if i.location in target:
-                        i.loseHealth(self, parent, gridTiles)
+            if not [True for i in target if tacticsfunctions.distanceFrom(parent.location, i) > self.range] and not [True for i in target if tacticsfunctions.distanceFrom(parent.location, i) < self.minRange]:
+                parent.mana -= self.mpCost
+                if self.special:
+                    exec(self.special)
+                else:
+                    for i in enemies:
+                        if i.location in target:
+                            return i.loseHealth(self, parent, gridTiles)
 
 
 class Job:

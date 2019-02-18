@@ -5,6 +5,8 @@ def move(person, location, grid, enemies, tiles):
     if location in moveAble(person, grid, enemies, tiles):
         person.location[0] = location[0]
         person.location[1] = location[1]
+        return True
+    return False
 
 class Actions(Enum):
     CHOOSE = auto()
@@ -55,7 +57,8 @@ def usableArea(person, ability, grid, tiles):
     usableRange = []
     while queue:
         current = queue.pop(0)
-        usableRange += [current[0]]
+        if current[0] >= ability.minRange:
+            usableRange += [current[0]]
         potential = []
 
         potential += [
@@ -73,20 +76,28 @@ def usableArea(person, ability, grid, tiles):
 
     return usableRange
 
-def nextTurn(units, enemies, deadUnits, deadEnemies):
+def checkDead(units, enemies, deadUnits, deadEnemies):
     for i in units:
         if i.health <= 0:
             deadUnits += [i]
     for i in enemies:
         if i.health <= 0:
             deadEnemies += [i]
-
     for i in deadUnits:
         if i in units:
             units.remove(i)
     for i in deadEnemies:
         if i in enemies:
             enemies.remove(i)
+
+def nextTurn(units, enemies, deadUnits, deadEnemies, grid, tiles):
+    checkDead(units, enemies, deadUnits, deadEnemies)
+
+    if units:
+        for myself in enemies:
+            exec(open(myself.ai).read())
+
+    checkDead(units, enemies, deadUnits, deadEnemies)
 
 def end():
     sys.exit()
