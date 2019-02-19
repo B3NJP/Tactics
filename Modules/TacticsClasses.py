@@ -40,6 +40,8 @@ class Person:
 
         self.items = items
 
+        self.turnStage = 0
+
     def levelUp(self):
         self.level += 1
         self.maxHealth += math.floor(random.random() + self.growthRates[0] + self.race.growthRates[0] + self.job.growthRates[0])
@@ -124,15 +126,17 @@ class Ability:
         self.special = special
 
     def use(self, parent, target, units, enemies, gridTiles): # gridTiles is an array of both the grid and tiles
-        if parent.mana >= self.mpCost:
-            if not [True for i in target if tacticsfunctions.distanceFrom(parent.location, i) > self.range] and not [True for i in target if tacticsfunctions.distanceFrom(parent.location, i) < self.minRange]:
-                parent.mana -= self.mpCost
-                if self.special:
-                    exec(self.special)
-                else:
-                    for i in enemies:
-                        if i.location in target:
-                            return i.loseHealth(self, parent, gridTiles)
+        if parent.turnStage < 2:
+            if parent.mana >= self.mpCost:
+                if not [True for i in target if tacticsfunctions.distanceFrom(parent.location, i) > self.range] and not [True for i in target if tacticsfunctions.distanceFrom(parent.location, i) < self.minRange]:
+                    parent.turnStage = 2
+                    parent.mana -= self.mpCost
+                    if self.special:
+                        exec(self.special)
+                    else:
+                        for i in enemies:
+                            if i.location in target:
+                                return i.loseHealth(self, parent, gridTiles)
 
 
 class Job:

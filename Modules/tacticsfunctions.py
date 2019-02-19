@@ -2,11 +2,11 @@ import sys
 from enum import Enum, auto
 
 def move(person, location, grid, enemies, tiles):
-    if location in moveAble(person, grid, enemies, tiles):
-        person.location[0] = location[0]
-        person.location[1] = location[1]
-        return True
-    return False
+    if person.turnStage < 1:
+        if location in moveAble(person, grid, enemies, tiles):
+            person.turnStage = 1
+            person.location[0] = location[0]
+            person.location[1] = location[1]
 
 class Actions(Enum):
     CHOOSE = auto()
@@ -55,10 +55,12 @@ def moveAble(person, grid, enemies, tiles):
 def usableArea(person, ability, grid, tiles):
     queue = [[person.location, ability.range]]
     usableRange = []
+    finalRange = []
     while queue:
         current = queue.pop(0)
-        if current[0] >= ability.minRange:
-            usableRange += [current[0]]
+        usableRange += [current[0]]
+        if distanceFrom(current[0], person.location) >= ability.minRange:
+            finalRange += [current[0]]
         potential = []
 
         potential += [
@@ -74,7 +76,7 @@ def usableArea(person, ability, grid, tiles):
                     if current[1] - 1 >= 0:
                         queue += [[i, current[1] - 1]]
 
-    return usableRange
+    return finalRange
 
 def checkDead(units, enemies, deadUnits, deadEnemies):
     for i in units:
@@ -91,6 +93,8 @@ def checkDead(units, enemies, deadUnits, deadEnemies):
             enemies.remove(i)
 
 def nextTurn(units, enemies, deadUnits, deadEnemies, grid, tiles):
+    for i in enemies:
+        i.turnStage = 0
     checkDead(units, enemies, deadUnits, deadEnemies)
 
     if units:
@@ -98,6 +102,9 @@ def nextTurn(units, enemies, deadUnits, deadEnemies, grid, tiles):
             exec(open(myself.ai).read())
 
     checkDead(units, enemies, deadUnits, deadEnemies)
+    for i in units:
+        i.turnStage = 0
+
 
 def end():
     sys.exit()

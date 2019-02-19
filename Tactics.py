@@ -97,11 +97,11 @@ while True:
                 if event.key == pygame.K_s:
                     action = tacticsfunctions.Actions.SELECT
 
-                if event.key == pygame.K_m:
+                if event.key == pygame.K_m and selected.turnStage < 1:
                     action = tacticsfunctions.Actions.MOVE
                     moveTo = tacticsfunctions.moveAble(selected, grid, enemies, tiles) # Shows where unit can be moved to
 
-                if event.key == pygame.K_a:
+                if event.key == pygame.K_a and selected.turnStage < 2:
                     action = tacticsfunctions.Actions.ABILITY
                     usableAbilities = selected.getAbilities()
                     targets = []
@@ -159,10 +159,6 @@ while True:
                             # Adjusts size of rectangle to fit in the correct spot
                             screen.fill((200, 0, 0), [max((j+area[0])*100, 0), max((i+area[1])*100, 0)] + [min((area[0] + j + 1)*100, 100), min((area[1] + i + 1)*100, 100)])
 
-    # Highlights selected unit
-    if action == tacticsfunctions.Actions.CHOOSE:
-        screen.fill((255, 175, 0), [max((selected.location[0]+area[0])*100, 0), max((selected.location[1]+area[1])*100, 0)] + [min((area[0] + selected.location[0] + 1)*100, 100), min((area[1] + selected.location[1] + 1)*100, 100)])
-
     # Draws grid
     for i in range(0, len(grid)):
         for j in range(0, len(grid[i])):
@@ -178,6 +174,16 @@ while True:
 
     # Draws units
     for i in units:
+        # Shows move stage
+        if i.turnStage == 1:
+            screen.fill((200, 200, 200), [max((i.location[0]+area[0])*100, 0), max((i.location[1]+area[1])*100, 0)] + [min((area[0] + i.location[0] + 1)*100, 100), min((area[1] + i.location[1] + 1)*100, 100)])
+        elif i.turnStage == 2:
+            screen.fill((100, 100, 100), [max((i.location[0]+area[0])*100, 0), max((i.location[1]+area[1])*100, 0)] + [min((area[0] + i.location[0] + 1)*100, 100), min((area[1] + i.location[1] + 1)*100, 100)])
+
+        # Highlights selected unit
+        if action == tacticsfunctions.Actions.CHOOSE and selected == i:
+            screen.fill((255, 175, 0), [max((selected.location[0]+area[0])*100, 0), max((selected.location[1]+area[1])*100, 0)] + [min((area[0] + selected.location[0] + 1)*100, 100), min((area[1] + selected.location[1] + 1)*100, 100)])
+
         screen.blit(i.img, [(i.location[0]+area[0])*100, (i.location[1]+area[1])*100])
 
     # Draw enemies
