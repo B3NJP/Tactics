@@ -132,7 +132,10 @@ class Ability:
                     parent.turnStage = 2
                     parent.mana -= self.mpCost
                     if self.special:
-                        exec(self.special)
+                        if self.special[:7] == "Assets/":
+                            exec(open(self.special).read())
+                        else:
+                            exec(self.special)
                     else:
                         for i in enemies:
                             if i.location in target:
