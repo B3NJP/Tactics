@@ -56,7 +56,8 @@ abilityUsed = 0
 usableRange = []
 
 spot = 25 # Spot from bottom to display usableAbilities
-menu = pygame.Surface((300, 400))
+menu = pygame.Surface((300, 400)) # Creates menu surface
+page = 0 # Creates menu page
 
 while True:
     # Gets events
@@ -191,17 +192,32 @@ while True:
     for i in enemies:
         screen.blit(i.img, [(i.location[0]+area[0])*100, (i.location[1]+area[1])*100])
 
+    # Prepares menu
+    menu.fill(white)
+    pygame.draw.rect(menu, black, [0, 0, 300, 400], 1)
+
     # Draws available actions
     if action == tacticsfunctions.Actions.ABILITY:
-        menu.fill(white)
-        pygame.draw.rect(menu, black, [0, 0, 300, 400], 1)
         spot = 25
-        for i in usableAbilities:
+        for i in usableAbilities[page*7:(page+1)*7]:
             if i == usableAbilities[abilityUsed]:
                 menu.blit(font.render(i.name, True, (255, 0, 0)), [10, spot])
             else:
                 menu.blit(font.render(i.name, True, black), [10, spot])
             spot += 50
+
+    # # Shows stats
+    # if action == tacticsfunctions.Actions.CHOOSE:
+    #     spot = 25
+    #     for i in usableAbilities:
+    #         if i == usableAbilities[abilityUsed]:
+    #             menu.blit(font.render(i.name, True, (255, 0, 0)), [10, spot])
+    #         else:
+    #             menu.blit(font.render(i.name, True, black), [10, spot])
+    #         spot += 50
+    #     screen.blit(menu, [0, 700-300])
+
+    if not action == tacticsfunctions.Actions.SELECT:
         screen.blit(menu, [0, 700-300])
 
     # Draws everything to screen
