@@ -30,14 +30,12 @@ font = pygame.font.Font(None, 25)
 # Creates Units
 # name, job, race, stats, growthRates, location = [0,0], abilities = [], weapon = None, items = []
 # unit1 = copy.deepcopy(TacticsClasses.Person("1", TacticsPresets.knight, TacticsPresets.human, [20, 20, 20, 20, 20, 20, 20, 20, 5], [.3, .3, .3, .3, .3, .3, .3, .3]))
-
 units = []
 units += all["unit"]
 deadUnits = []
 
 # Creates Enemies
 # enemy1 = copy.deepcopy(TacticsPresets.humanKnightTemplateUnit("2", [3, 4]))
-
 enemies = []
 enemies += all["enemy"]
 deadEnemies = []
@@ -59,6 +57,11 @@ spot = 25 # Spot from bottom to display usableAbilities
 menu = pygame.Surface((300, 400)) # Creates menu surface
 page = 0 # Creates menu page
 
+# Sets up units and enemies
+for i in units + enemies:
+    i.health = i.getStat("maxHealth", [grid,tiles])
+    i.mana = i.getStat("maxMana", [grid,tiles])
+
 while True:
     # Gets events
     for event in pygame.event.get():
@@ -75,7 +78,7 @@ while True:
                 tacticsfunctions.nextTurn(units, enemies, deadUnits, deadEnemies, grid, tiles)
 
             # Scroll screen around
-            if action != tacticsfunctions.Actions.ABILITY:
+            if pygame.key.get_mods() & pygame.KMOD_SHIFT:
                 if event.key == pygame.K_UP:
                     area[1] += .2
                 if event.key == pygame.K_RIGHT:
@@ -85,14 +88,19 @@ while True:
                 if event.key == pygame.K_LEFT:
                     area[0] += .2
             else:
-                if event.key == pygame.K_UP and abilityUsed > 0:
-                    abilityUsed -= 1
-                    targets = []
-                    usableRange = tacticsfunctions.usableArea(selected, usableAbilities[abilityUsed], grid, tiles)
-                if event.key == pygame.K_DOWN and abilityUsed < len(usableAbilities)-1:
-                    abilityUsed += 1
-                    targets = []
-                    usableRange = tacticsfunctions.usableArea(selected, usableAbilities[abilityUsed], grid, tiles)
+                if event.key == pygame.K_RIGHT:
+                    page += 1
+                if event.key == pygame.K_LEFT and page > 0:
+                    page -= 1
+                if action != tacticsfunctions.Actions.ABILITY:
+                    if event.key == pygame.K_UP and abilityUsed > 0:
+                        abilityUsed -= 1
+                        targets = []
+                        usableRange = tacticsfunctions.usableArea(selected, usableAbilities[abilityUsed], grid, tiles)
+                    if event.key == pygame.K_DOWN and abilityUsed < len(usableAbilities)-1:
+                        abilityUsed += 1
+                        targets = []
+                        usableRange = tacticsfunctions.usableArea(selected, usableAbilities[abilityUsed], grid, tiles)
 
             # Choose action
             if action == tacticsfunctions.Actions.CHOOSE:
