@@ -182,7 +182,7 @@ class Race:
         self.growthRates = growthRates
 
 class Weapon:
-    def __init__(self, name, pAtk, mAtk, dfce, res, agi, skl, abilities):
+    def __init__(self, name, pAtk, mAtk, dfce, res, agi, skl, mov, abilities):
         self.name = name
         self.pAtk = pAtk
         self.mAtk = mAtk
@@ -192,6 +192,7 @@ class Weapon:
 
         self.agi = agi
         self.skl = skl
+        self.mov = mov
 
         self.abilities = abilities
 

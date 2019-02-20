@@ -18,7 +18,7 @@ def distanceFrom(loc, loc2):
     return abs(loc[0]-loc2[0]) + abs(loc[1]-loc2[1])
 
 def moveAble(person, grid, enemies, tiles):
-    queue = [[person.location, person.mov]]
+    queue = [[person.location, person.getStat("mov", [grid, tiles])]]
     moveTo = []
     while queue:
         current = queue.pop(0)
