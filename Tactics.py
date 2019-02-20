@@ -206,16 +206,19 @@ while True:
                 menu.blit(font.render(i.name, True, black), [10, spot])
             spot += 50
 
-    # # Shows stats
-    # if action == tacticsfunctions.Actions.CHOOSE:
-    #     spot = 25
-    #     for i in usableAbilities:
-    #         if i == usableAbilities[abilityUsed]:
-    #             menu.blit(font.render(i.name, True, (255, 0, 0)), [10, spot])
-    #         else:
-    #             menu.blit(font.render(i.name, True, black), [10, spot])
-    #         spot += 50
-    #     screen.blit(menu, [0, 700-300])
+    # Shows stats
+    if action == tacticsfunctions.Actions.CHOOSE:
+        spot = 25
+        if page == 0:
+            menu.blit(font.render("Health: " + str(selected.health) + "/" + str(selected.getStat("maxHealth", [grid, tiles])), True, black), [10, spot])
+            spot += 50
+            menu.blit(font.render("Mana: " + str(selected.mana) + "/" + str(selected.getStat("maxMana", [grid, tiles])), True, black), [10, spot])
+            spot += 50
+        for i in [None, None, "pAtk", "mAtk", "dfce", "res", "agi", "skl", "mov"][page*7:(page+1)*7]:
+            if i:
+                menu.blit(font.render(i + ": " + str(selected.getStat(i, [grid, tiles])), True, black), [10, spot])
+                spot += 50
+        screen.blit(menu, [0, 700-300])
 
     if not action == tacticsfunctions.Actions.SELECT:
         screen.blit(menu, [0, 700-300])

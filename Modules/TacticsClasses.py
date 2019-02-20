@@ -145,7 +145,7 @@ class Ability:
 class Job:
     def __init__(self, name, maxHealth, maxMana, pAtk, mAtk, dfce, res, agi, skl, mov, abilities, growthRates):
         self.name = name
-        self.maxhealth = maxHealth
+        self.maxHealth = maxHealth
         self.maxMana = maxMana
 
         self.pAtk = pAtk
@@ -186,7 +186,7 @@ class Weapon:
         self.name = name
         self.maxHealth = maxHealth
         self.maxMana = maxMana
-        
+
         self.pAtk = pAtk
         self.mAtk = mAtk
 
