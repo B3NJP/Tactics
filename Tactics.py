@@ -126,22 +126,21 @@ while True:
                 for i in units + enemies:
                     if (i.location == location):
                         selected = i
-                        if i in units:
-                            action = tacticsfunctions.Actions.CHOOSE
+                        action = tacticsfunctions.Actions.CHOOSE
                         break
-
-            elif action == tacticsfunctions.Actions.MOVE: # Move Unit
-                if location in moveTo:
-                    tacticsfunctions.move(selected, location, grid, enemies, tiles)
-                    action = tacticsfunctions.Actions.SELECT
-
-            elif action == tacticsfunctions.Actions.ABILITY:
-                if location in usableRange:
-                    targets += [location]
-                    if len(targets) >= usableAbilities[abilityUsed].targets:
-                        usableAbilities[abilityUsed].use(selected, targets, units, enemies, [grid, tiles])
-                        tacticsfunctions.checkDead(units, enemies, deadUnits, deadEnemies)
+            elif selected in units:
+                if action == tacticsfunctions.Actions.MOVE: # Move Unit
+                    if location in moveTo:
+                        tacticsfunctions.move(selected, location, grid, enemies, tiles)
                         action = tacticsfunctions.Actions.SELECT
+
+                elif action == tacticsfunctions.Actions.ABILITY: # Use ability
+                    if location in usableRange:
+                        targets += [location]
+                        if len(targets) >= usableAbilities[abilityUsed].targets:
+                            usableAbilities[abilityUsed].use(selected, targets, units, enemies, [grid, tiles])
+                            tacticsfunctions.checkDead(units, enemies, deadUnits, deadEnemies)
+                            action = tacticsfunctions.Actions.SELECT
 
 
 
