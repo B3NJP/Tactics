@@ -92,7 +92,7 @@ while True:
                     page += 1
                 if event.key == pygame.K_LEFT and page > 0:
                     page -= 1
-                if action != tacticsfunctions.Actions.ABILITY:
+                if action == tacticsfunctions.Actions.ABILITY:
                     if event.key == pygame.K_UP and abilityUsed > 0:
                         abilityUsed -= 1
                         targets = []
@@ -123,10 +123,11 @@ while True:
             # Gets location of mouse (adjusted for scroll)
             location = [int((event.pos[0]-area[0]*100)//100), int((event.pos[1]-area[1]*100)//100)]
             if action == tacticsfunctions.Actions.SELECT: # Select Unit
-                for i in units:
+                for i in units + enemies:
                     if (i.location == location):
                         selected = i
-                        action = tacticsfunctions.Actions.CHOOSE
+                        if i in units:
+                            action = tacticsfunctions.Actions.CHOOSE
                         break
 
             elif action == tacticsfunctions.Actions.MOVE: # Move Unit
@@ -207,7 +208,7 @@ while True:
     # Draws available actions
     if action == tacticsfunctions.Actions.ABILITY:
         spot = 25
-        for i in usableAbilities[page*7:(page+1)*7]:
+        for i in usableAbilities[page*6:(page+1)*6]:
             if i == usableAbilities[abilityUsed]:
                 menu.blit(font.render(i.name, True, (255, 0, 0)), [10, spot])
             else:
@@ -215,21 +216,21 @@ while True:
             spot += 50
 
     # Shows stats
-    if action == tacticsfunctions.Actions.CHOOSE:
+    if selected and action != tacticsfunctions.Actions.ABILITY:
         spot = 25
         if page == 0:
             menu.blit(font.render("Health: " + str(selected.health) + "/" + str(selected.getStat("maxHealth", [grid, tiles])), True, black), [10, spot])
             spot += 50
             menu.blit(font.render("Mana: " + str(selected.mana) + "/" + str(selected.getStat("maxMana", [grid, tiles])), True, black), [10, spot])
             spot += 50
-        for i in [None, None, "pAtk", "mAtk", "dfce", "res", "agi", "skl", "mov"][page*7:(page+1)*7]:
+        for i in [None, None, "pAtk", "mAtk", "dfce", "res", "agi", "skl", "mov"][page*6:(page+1)*6]:
             if i:
                 menu.blit(font.render(i + ": " + str(selected.getStat(i, [grid, tiles])), True, black), [10, spot])
                 spot += 50
         screen.blit(menu, [0, 700-300])
 
-    if not action == tacticsfunctions.Actions.SELECT:
-        screen.blit(menu, [0, 700-300])
+    # if not action == tacticsfunctions.Actions.SELECT:
+    screen.blit(menu, [0, 700-300])
 
     # Draws everything to screen
     pygame.display.flip()
