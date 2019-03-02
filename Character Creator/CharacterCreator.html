@@ -24,16 +24,16 @@
       mov: <input type="number" name="mov" id="mov" min="1"><br>
       <br>
       GrowthRates: <br>
-      Max Health: <input type="number" name="MaxHealth" id="maxHealth" min="1"><br>
-      Max Mana: <input type="number" name="MaxMana" id="maxMana" min="1"><br>
+      Max Health: <input type="number" name="MaxHealthG" id="maxHealthG" min="1"><br>
+      Max Mana: <input type="number" name="MaxManaG" id="maxManaG" min="1"><br>
       <br>
-      pAtk: <input type="number" name="pAtk" id="pAtk" min="1"><br>
-      mAtk: <input type="number" name="mAtk" id="mAtk" min="1"><br>
-      dfce: <input type="number" name="dfce" id="dfce" min="1"><br>
-      res: <input type="number" name="res" id="res" min="1"><br>
+      pAtk: <input type="number" name="pAtkG" id="pAtkG" min="1"><br>
+      mAtk: <input type="number" name="mAtkG" id="mAtkG" min="1"><br>
+      dfce: <input type="number" name="dfceG" id="dfceG" min="1"><br>
+      res: <input type="number" name="resG" id="resG" min="1"><br>
       <br>
-      skl: <input type="number" name="skl" id="skl" min="1"><br>
-      agi: <input type="number" name="agi" id="agi" min="1"><br>
+      skl: <input type="number" name="sklG" id="sklG" min="1"><br>
+      agi: <input type="number" name="agiG" id="agiG" min="1"><br>
       <br>
       <br>
       Image: <input type="text" name="Image" id="img"><br>
@@ -41,10 +41,11 @@
       Location: <input type="number" name="Location1" id="loc1"><input type="number" name="Location2" id="loc2"><br>
       Weapon: <input type="text" name="Weapon" id="weapon"><br>
       <br>
-      <input type="button" name="return" id="return" onclick="" value="Output">
+      <input type="button" name="return" id="return" onclick="outputToXML();" value="Output">
     </p>
     <p>
-      Output: <input type="text" name="xmlOutput" id="xmlOutput" disabled>
+      Output: <br>
+      <textarea name="xmlOutput" id="xmlOutput" cols="40" rows="20" readonly></textarea>
     </p>
   </body>
   <script type="text/javascript">
@@ -55,7 +56,7 @@
     var maxHealth = 0;
     var maxMana = 0;
 
-    var pAtkg = 0;
+    var pAtk = 0;
     var mAtk = 0;
     var dfce = 0;
     var res = 0;
@@ -75,5 +76,52 @@
 
     var sklG = 0;
     var agiG = 0;
+
+    var img = "";
+    var ai = "";
+    var loc = [0,0];
+    var weapon = "";
+
+    function outputToXML() {
+      outputXML = "";
+
+      name = document.getElementById("characterName").value;
+      job = document.getElementById("job").value;
+      race = document.getElementById("race").value;
+
+      maxHealth = document.getElementById("maxHealth").value;
+      maxMana = document.getElementById("maxMana").value;
+
+      pAtk = document.getElementById("pAtk").value;
+      mAtk = document.getElementById("mAtk").value;
+      dfce = document.getElementById("dfce").value;
+      res = document.getElementById("res").value;
+
+      skl = document.getElementById("skl").value;
+      agi = document.getElementById("agi").value;
+      mov = document.getElementById("mov").value;
+
+      // GrowthRates
+      maxHealthG = document.getElementById("maxHealthG").value;
+      maxManaG = document.getElementById("maxManaG").value;
+
+      pAtkG = document.getElementById("pAtkG").value;
+      mAtkG = document.getElementById("mAtkG").value;
+      dfceG = document.getElementById("dfceG").value;
+      resG = document.getElementById("resG").value;
+
+      sklG = document.getElementById("sklG").value;
+      agiG = document.getElementById("agiG").value;
+
+      img = document.getElementById("img").value;
+      ai = document.getElementById("ai").value;
+      loc = [document.getElementById("loc1"), document.getElementById("loc2")];
+      weapon = document.getElementById("weapon").value;
+
+      outputXML += "<unit name=\""+name+"\">\n";
+      outputXML += "  <name type=\"text\">"+name+"</name>";
+
+      document.getElementById("xmlOutput").innerHTML = outputXML;
+    }
   </script>
 </html>
