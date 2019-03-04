@@ -226,8 +226,7 @@ while True:
             if i:
                 menu.blit(font.render(i + ": " + str(selected.getStat(i, [grid, tiles])), True, black), [10, spot])
                 spot += 50
-        screen.blit(menu, [0, 700-300])
-
+        
     if not pygame.key.get_mods() & pygame.KMOD_SHIFT:
         screen.blit(menu, [0, 700-300])
 
