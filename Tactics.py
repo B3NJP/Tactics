@@ -228,8 +228,8 @@ while True:
                 spot += 50
         screen.blit(menu, [0, 700-300])
 
-    # if not action == tacticsfunctions.Actions.SELECT:
-    screen.blit(menu, [0, 700-300])
+    if not pygame.key.get_mods() & pygame.KMOD_SHIFT:
+        screen.blit(menu, [0, 700-300])
 
     # Draws everything to screen
     pygame.display.flip()
