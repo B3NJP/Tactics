@@ -1,5 +1,5 @@
 import sys, pygame, fileinput
-from Modules import TacticsPresets, mapcreatorfunctions
+from Modules import TacticsClasses, mapcreatorfunctions, xmlProcessing
 pygame.init()
 box = [100, 100]
 size = [700, 700]
