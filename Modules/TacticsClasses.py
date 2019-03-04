@@ -2,7 +2,7 @@ import math, random, pygame, copy
 from Modules import tacticsfunctions
 
 class Person:
-    def __init__(self, name, job, race, stats, growthRates, img, ai, location = [0,0], abilities = [], weapon = None, items = []):
+    def __init__(self, name, job, race, stats, growthRates, img, ai = None, location = [0,0], abilities = [], weapon = None, items = []):
         self.name = name
         self.job = job
         self.race = race
