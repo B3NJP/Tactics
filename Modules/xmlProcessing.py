@@ -26,7 +26,6 @@ def toDictionary(element):
 
 All = {
 "unit": [],
-"enemy": [],
 "ability": {},
 "race": {},
 "job": {},
@@ -50,6 +49,4 @@ for i in root:
         elif j.tag == "tile":
             All[j.tag][j.get("name")] = TacticsClasses.Tile(**toDictionary(j))
         elif j.tag == "unit":
-            All[j.tag] += [TacticsClasses.Person(**toDictionary(j))]
-        elif j.tag == "enemy":
             All[j.tag] += [TacticsClasses.Person(**toDictionary(j))]
