@@ -1,5 +1,5 @@
 import sys, pygame, fileinput, copy
-from Modules import TacticsClasses, TacticsPresets, tacticsfunctions, xmlProcessing
+from Modules import TacticsClasses, TacticsPresets, tacticsfunctions, xmlProcessing, battleProcessing
 pygame.init()
 
 # Basic Values
@@ -11,12 +11,12 @@ white = 255, 255, 255
 area = [0, 0]
 
 all = xmlProcessing.All
+battles = battleProcessing.start(all)
+cBattle = battles[0]
+print(battles)
 
 # Creates Grid
-grid = []
-
-for line in fileinput.input():
-    grid += [line.rstrip("\n").split(",")]
+grid = cBattle[0]
 
 # Creates Screen
 screen = pygame.display.set_mode(size)
@@ -38,7 +38,7 @@ deadUnits = []
 # Creates Enemies
 # enemy1 = copy.deepcopy(TacticsPresets.humanKnightTemplateUnit("2", [3, 4]))
 enemies = []
-enemies += all["enemy"]
+enemies += cBattle[1]
 deadEnemies = []
 
 # Creates Action choice
