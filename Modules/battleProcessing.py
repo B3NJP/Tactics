@@ -35,18 +35,14 @@ All = {
 
 tree = ET.parse("Base.xml")
 root = tree.getroot()
-for i in root:
-    for j in i:
-        # All[j.tag][j.get(name)] = toDictionary(j)
-        if j.tag == "ability":
-            All[j.tag][j.get("name")] = TacticsClasses.Ability(**toDictionary(j))
-        elif j.tag == "race":
-            All[j.tag][j.get("name")] = TacticsClasses.Race(**toDictionary(j))
-        elif j.tag == "job":
-            All[j.tag][j.get("name")] = TacticsClasses.Job(**toDictionary(j))
-        elif j.tag == "weapon":
-            All[j.tag][j.get("name")] = TacticsClasses.Weapon(**toDictionary(j))
-        elif j.tag == "tile":
-            All[j.tag][j.get("name")] = TacticsClasses.Tile(**toDictionary(j))
-        elif j.tag == "unit":
-            All[j.tag] += [TacticsClasses.Person(**toDictionary(j))]
+battles = root.getchildren()
+for i in battles:
+    newBattle = []
+    grid = []
+    for line in fileinput.input(files=i[0]):
+        grid += [line.rstrip("\n").split(",")]
+    newBattle[0] = grid
+    newBattle[1] = []
+
+    for j in i[1]
+    newBattle[1] += [TacticsClasses.Person(**toDictionary(j))]
