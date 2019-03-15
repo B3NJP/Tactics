@@ -91,22 +91,22 @@ class Person:
     def getAbilities(self):
         abilities = []
         for i in self.abilities:
-            if not i in abilities and i.mpCost <= self.mana:
+            if not i in abilities and i.mpCost <= self.mana and i.turnCost + self.turnStage < 2:
                 abilities += [i]
 
         for i in self.job.abilities:
-            if not i in abilities and i.mpCost <= self.mana:
+            if not i in abilities and i.mpCost <= self.mana and i.turnCost + self.turnStage < 2:
                 abilities += [i]
 
         for i in self.race.abilities:
-            if not i in abilities and i.mpCost <= self.mana:
+            if not i in abilities and i.mpCost <= self.mana and i.turnCost + self.turnStage < 2:
                 abilities += [i]
 
         return abilities
 
 
 class Ability:
-    def __init__(self, name, type, dmgType, minRange = 0, range = 1, targets = 1, baseDmg = 0, multi = 1, skl = 0, sklMulti = 1, mpCost = 0, cooldown = 0, special = None):
+    def __init__(self, name, type, dmgType, minRange = 0, range = 1, targets = 1, baseDmg = 0, multi = 1, skl = 0, sklMulti = 1, mpCost = 0, cooldown = 0, special = None, turnCost = 1):
         self.name = name
         self.type = type
 
@@ -125,11 +125,13 @@ class Ability:
         self.cooldown = cooldown
         self.special = special
 
+        self.turnCost = turnCost
+
     def use(self, parent, target, units, enemies, gridTiles): # gridTiles is an array of both the grid and tiles
-        if parent.turnStage < 2:
+        if parent.turnStage + self.turnCost < 2:
             if parent.mana >= self.mpCost:
                 if not [True for i in target if tacticsfunctions.distanceFrom(parent.location, i) > self.range] and not [True for i in target if tacticsfunctions.distanceFrom(parent.location, i) < self.minRange]:
-                    parent.turnStage = 2
+                    parent.turnStage += self.turnCost
                     parent.mana -= self.mpCost
                     if self.special:
                         if self.special[:7] == "Assets/":

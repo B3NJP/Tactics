@@ -2,7 +2,7 @@ import sys
 from enum import Enum, auto
 
 def move(person, location, grid, enemies, tiles):
-    if person.turnStage < 1:
+    if person.turnStage <= 0.5:
         if location in moveAble(person, grid, enemies, tiles):
             person.turnStage = 1
             person.location[0] = location[0]

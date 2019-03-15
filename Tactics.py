@@ -108,16 +108,17 @@ while True:
                 if event.key == pygame.K_s:
                     action = tacticsfunctions.Actions.SELECT
 
-                if event.key == pygame.K_m and selected.turnStage < 1:
+                if event.key == pygame.K_m and selected.turnStage <= 0.5:
                     action = tacticsfunctions.Actions.MOVE
                     moveTo = tacticsfunctions.moveAble(selected, grid, enemies, tiles) # Shows where unit can be moved to
 
                 if event.key == pygame.K_a and selected.turnStage < 2:
-                    action = tacticsfunctions.Actions.ABILITY
                     usableAbilities = selected.getAbilities()
-                    targets = []
-                    abilityUsed = 0
-                    usableRange = tacticsfunctions.usableArea(selected, usableAbilities[abilityUsed], grid, tiles)
+                    if usableAbilities:
+                        action = tacticsfunctions.Actions.ABILITY
+                        targets = []
+                        abilityUsed = 0
+                        usableRange = tacticsfunctions.usableArea(selected, usableAbilities[abilityUsed], grid, tiles)
 
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: # Mouse buttons
 
@@ -215,6 +216,19 @@ while True:
                 menu.blit(font.render(i.name, True, black), [10, spot])
             spot += 50
 
+        menu.blit(font.render(str(usableAbilities[abilityUsed].mpCost), True, black), [300-110, 10])
+        menu.blit(font.render(str(usableAbilities[abilityUsed].turnCost), True, black), [300-110, 25])
+        damage = 0
+        if usableAbilities[abilityUsed].dmgType == "physical":
+            damage += selected.getStat("pAtk", [grid, tiles])
+            damage *= usableAbilities[abilityUsed].multi
+        elif usableAbilities[abilityUsed].dmgType == "magic":
+            damage += selected.getStat("mAtk", [grid, tiles])
+            damage *= usableAbilities[abilityUsed].multi
+        else:
+            damage *= usableAbilities[abilityUsed].multi
+        menu.blit(font.render(str(damage), True, black), [300-110, 40])
+
     # Shows stats
     if selected and action != tacticsfunctions.Actions.ABILITY:
         spot = 25
@@ -223,8 +237,10 @@ while True:
             spot += 50
             menu.blit(font.render("Mana: " + str(selected.mana) + "/" + str(selected.getStat("maxMana", [grid, tiles])), True, black), [10, spot])
             spot += 50
-        for i in [None, None, "pAtk", "mAtk", "dfce", "res", "agi", "skl", "mov"][page*6:(page+1)*6]:
-            if i:
+        for i in [None, None, "pAtk", "mAtk", "dfce", "res", "agi", "skl", "mov", "turnStage"][page*6:(page+1)*6]:
+            if i == "turnStage":
+                menu.blit(font.render(i + ": " + str(selected.turnStage), True, black), [10, spot])
+            elif i:
                 menu.blit(font.render(i + ": " + str(selected.getStat(i, [grid, tiles])), True, black), [10, spot])
                 spot += 50
 
