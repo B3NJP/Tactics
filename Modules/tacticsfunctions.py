@@ -4,7 +4,7 @@ from enum import Enum, auto
 def move(person, location, grid, enemies, tiles):
     if person.turnStage <= 0.5:
         if location in moveAble(person, grid, enemies, tiles):
-            person.turnStage = 1
+            person.turnStage = 0.9
             person.location[0] = location[0]
             person.location[1] = location[1]
 
@@ -104,7 +104,6 @@ def nextTurn(units, enemies, deadUnits, deadEnemies, grid, tiles):
     checkDead(units, enemies, deadUnits, deadEnemies)
     for i in units:
         i.turnStage = 0
-
 
 def end():
     sys.exit()

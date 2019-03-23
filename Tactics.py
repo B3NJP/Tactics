@@ -1,5 +1,5 @@
 import sys, pygame, fileinput, copy
-from Modules import TacticsClasses, TacticsPresets, tacticsfunctions, xmlProcessing, battleProcessing
+from Modules import TacticsClasses, TacticsPresets, tacticsfunctions, xmlProcessing, battleProcessing, Start
 pygame.init()
 
 # Basic Values
@@ -12,8 +12,8 @@ area = [0, 0]
 
 all = xmlProcessing.All
 battles = battleProcessing.start(all)
-cBattle = battles[0]
-print(battles)
+cBattleN = 0
+cBattle = copy.deepcopy(battles[cBattleN])
 
 # Creates Grid
 grid = cBattle[0]
@@ -63,6 +63,36 @@ for i in units + enemies:
     i.health = i.getStat("maxHealth", [grid,tiles])
     i.mana = i.getStat("maxMana", [grid,tiles])
 
+def start():
+    global cBattle, cBattleN, battles, grid, enemies, deadEnemies, action, selected, moveTo, usableAbilities, targets, abilityUsed, usableRange
+    if cBattleN < len(battles)-1:
+        cBattleN += 1
+    else:
+        cBattleN = 0
+    cBattle = copy.deepcopy(battles[cBattleN])
+
+    # Creates Grid
+    grid = cBattle[0]
+
+    # Creates Enemies
+    enemies = []
+    enemies += cBattle[1]
+    deadEnemies = []
+
+    # Creates Action choice
+    action = tacticsfunctions.Actions.SELECT
+    selected = None # Selected Unit
+
+    # Area selected unit can move to
+    moveTo = []
+
+    # Unit's abilities
+    usableAbilities = []
+    targets = []
+    abilityUsed = 0
+    usableRange = []
+
+
 while True:
     # Gets events
     for event in pygame.event.get():
@@ -77,6 +107,8 @@ while True:
             # Ends turn
             if event.key == pygame.K_RETURN:
                 tacticsfunctions.nextTurn(units, enemies, deadUnits, deadEnemies, grid, tiles)
+                if len(enemies) == 0:
+                    start()
 
             # Scroll screen around
             if pygame.key.get_mods() & pygame.KMOD_SHIFT:
@@ -187,9 +219,9 @@ while True:
     # Draws units
     for i in units:
         # Shows move stage
-        if i.turnStage == 1:
+        if i.turnStage >= 1:
             screen.fill((200, 200, 200), [max((i.location[0]+area[0])*100, 0), max((i.location[1]+area[1])*100, 0)] + [min((area[0] + i.location[0] + 1)*100, 100), min((area[1] + i.location[1] + 1)*100, 100)])
-        elif i.turnStage == 2:
+        elif i.turnStage >= 2:
             screen.fill((100, 100, 100), [max((i.location[0]+area[0])*100, 0), max((i.location[1]+area[1])*100, 0)] + [min((area[0] + i.location[0] + 1)*100, 100), min((area[1] + i.location[1] + 1)*100, 100)])
 
         # Highlights selected unit
@@ -233,11 +265,13 @@ while True:
     if selected and action != tacticsfunctions.Actions.ABILITY:
         spot = 25
         if page == 0:
+            menu.blit(font.render(str(selected.name), True, black), [10, spot])
+            spot += 50
             menu.blit(font.render("Health: " + str(selected.health) + "/" + str(selected.getStat("maxHealth", [grid, tiles])), True, black), [10, spot])
             spot += 50
             menu.blit(font.render("Mana: " + str(selected.mana) + "/" + str(selected.getStat("maxMana", [grid, tiles])), True, black), [10, spot])
             spot += 50
-        for i in [None, None, "pAtk", "mAtk", "dfce", "res", "agi", "skl", "mov", "turnStage"][page*6:(page+1)*6]:
+        for i in [None, None, None, "pAtk", "mAtk", "dfce", "res", "agi", "skl", "mov", "turnStage"][page*6:(page+1)*6]:
             if i == "turnStage":
                 menu.blit(font.render(i + ": " + str(selected.turnStage), True, black), [10, spot])
             elif i:

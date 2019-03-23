@@ -91,15 +91,15 @@ class Person:
     def getAbilities(self):
         abilities = []
         for i in self.abilities:
-            if not i in abilities and i.mpCost <= self.mana and i.turnCost + self.turnStage < 2:
+            if not i in abilities and i.mpCost <= self.mana and i.turnCost + self.turnStage <= 2:
                 abilities += [i]
 
         for i in self.job.abilities:
-            if not i in abilities and i.mpCost <= self.mana and i.turnCost + self.turnStage < 2:
+            if not i in abilities and i.mpCost <= self.mana and i.turnCost + self.turnStage <= 2:
                 abilities += [i]
 
         for i in self.race.abilities:
-            if not i in abilities and i.mpCost <= self.mana and i.turnCost + self.turnStage < 2:
+            if not i in abilities and i.mpCost <= self.mana and i.turnCost + self.turnStage <= 2:
                 abilities += [i]
 
         return abilities
@@ -128,7 +128,7 @@ class Ability:
         self.turnCost = turnCost
 
     def use(self, parent, target, units, enemies, gridTiles): # gridTiles is an array of both the grid and tiles
-        if parent.turnStage + self.turnCost < 2:
+        if parent.turnStage + self.turnCost <= 2:
             if parent.mana >= self.mpCost:
                 if not [True for i in target if tacticsfunctions.distanceFrom(parent.location, i) > self.range] and not [True for i in target if tacticsfunctions.distanceFrom(parent.location, i) < self.minRange]:
                     parent.turnStage += self.turnCost
