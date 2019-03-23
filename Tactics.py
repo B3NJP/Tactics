@@ -1,5 +1,5 @@
 import sys, pygame, fileinput, copy
-from Modules import TacticsClasses, TacticsPresets, tacticsfunctions, xmlProcessing, battleProcessing, Start
+from Modules import TacticsClasses, TacticsPresets, tacticsfunctions, xmlProcessing, battleProcessing
 pygame.init()
 
 # Basic Values
@@ -13,10 +13,10 @@ area = [0, 0]
 all = xmlProcessing.All
 battles = battleProcessing.start(all)
 cBattleN = 0
-cBattle = copy.deepcopy(battles[cBattleN])
+cBattle = battles[cBattleN]
 
 # Creates Grid
-grid = cBattle[0]
+grid = copy.deepcopy(cBattle[0])
 
 # Creates Screen
 screen = pygame.display.set_mode(size)
@@ -64,17 +64,20 @@ for i in units + enemies:
     i.mana = i.getStat("maxMana", [grid,tiles])
 
 def start():
-    global cBattle, cBattleN, battles, grid, enemies, deadEnemies, action, selected, moveTo, usableAbilities, targets, abilityUsed, usableRange
+    global cBattle, cBattleN, battles, grid, enemies, deadEnemies, action, selected, moveTo, units, usableAbilities, targets, abilityUsed, usableRange
     if cBattleN < len(battles)-1:
         cBattleN += 1
     else:
         cBattleN = 0
-    cBattle = copy.deepcopy(battles[cBattleN])
+    cBattle = battles[cBattleN]
 
     # Creates Grid
-    grid = cBattle[0]
+    grid = copy.deepcopy(cBattle[0])
 
     # Creates Enemies
+    for i in cBattle[1]:
+        i.health = i.maxHealth
+        i.mana = i.maxMana
     enemies = []
     enemies += cBattle[1]
     deadEnemies = []
@@ -85,6 +88,14 @@ def start():
 
     # Area selected unit can move to
     moveTo = []
+
+    # Unit locations
+    tx = 0
+    for i in units:
+        i.health = i.maxHealth
+        i.mana = i.maxMana
+        i.location = [tx, 0]
+        tx += 1
 
     # Unit's abilities
     usableAbilities = []
