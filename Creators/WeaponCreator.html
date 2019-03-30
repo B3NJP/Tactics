@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Weapon Creator</title>
+  </head>
+  <body>
+    <p>
+      ID: <input type="text" name="ID" id="ID"><br>
+      Name: <input type="text" name="WeaponName" id="weaponName"><br>
+      <br>
+      Stats: <br>
+      Max Health: <input type="number" name="MaxHealth" id="maxHealth" min="1"><br>
+      Max Mana: <input type="number" name="MaxMana" id="maxMana" min="1"><br>
+      <br>
+      pAtk: <input type="number" name="pAtk" id="pAtk" min="1"><br>
+      mAtk: <input type="number" name="mAtk" id="mAtk" min="1"><br>
+      dfce: <input type="number" name="dfce" id="dfce" min="1"><br>
+      res: <input type="number" name="res" id="res" min="1"><br>
+      <br>
+      agi: <input type="number" name="agi" id="agi" min="1"><br>
+      skl: <input type="number" name="skl" id="skl" min="1"><br>
+      mov: <input type="number" name="mov" id="mov" min="1"><br>
+      <br>
+      <input type="button" name="return" id="return" onclick="outputToXML();" value="Output">
+    </p>
+    <p>
+      Output: <br>
+      <textarea name="xmlOutput" id="xmlOutput" cols="40" rows="20" readonly></textarea>
+    </p>
+  </body>
+  <script type="text/javascript">
+    var name = "";
+
+    var maxHealth = 0;
+    var maxMana = 0;
+
+    var pAtk = 0;
+    var mAtk = 0;
+    var dfce = 0;
+    var res = 0;
+
+    var skl = 0;
+    var agi = 0;
+    var mov = 0;
+
+    function outputToXML() {
+      outputXML = "";
+
+      id = document.getElementById("ID").value;
+      name = document.getElementById("characterName").value;
+
+      maxHealth = document.getElementById("maxHealth").value;
+      maxMana = document.getElementById("maxMana").value;
+
+      pAtk = document.getElementById("pAtk").value;
+      mAtk = document.getElementById("mAtk").value;
+      dfce = document.getElementById("dfce").value;
+      res = document.getElementById("res").value;
+
+      skl = document.getElementById("skl").value;
+      agi = document.getElementById("agi").value;
+      mov = document.getElementById("mov").value;
+
+      outputXML += "<weapon name=\""+id+"\">\n";
+      outputXML += "  <name type=\"text\">"+name+"</name>\n";
+      if (maxHealth) outputXML += "  <maxHealth type=\"int\">"+maxHealth+"</maxHealth>\n";
+      if (maxMana) outputXML += "  <maxMana type=\"int\">"+maxMana+"</maxMana>\n";
+      if (pAtk) outputXML += "  <pAtk type=\"int\">"+pAtk+"</pAtk>\n";
+      if (mAtk) outputXML += "  <mAtk type=\"int\">"+mAtk+"</mAtk>\n";
+      if (dfce) outputXML += "  <dfce type=\"int\">"+dfce+"</dfce>\n";
+      if (res) outputXML += "  <res type=\"int\">"+res+"</res>\n";
+      if (agi) outputXML += "  <agi type=\"int\">"+agi+"</agi>\n";
+      if (skl) outputXML += "  <skl type=\"int\">"+skl+"</skl>\n";
+      if (mov) outputXML += "  <mov type=\"int\">"+mov+"</mov>\n";
+      outputXML += "</weapon>";
+
+      document.getElementById("xmlOutput").innerHTML = outputXML;
+    }
+  </script>
+</html>
