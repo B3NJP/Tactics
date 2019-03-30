@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Job Creator</title>
+  </head>
+  <body>
+    <p>
+      ID: <input type="text" name="ID" id="ID"><br>
+      Name: <input type="text" name="CharacterName" id="characterName"><br>
+      <br>
+      Stats: <br>
+      Max Health: <input type="number" name="MaxHealth" id="maxHealth" min="1"><br>
+      Max Mana: <input type="number" name="MaxMana" id="maxMana" min="1"><br>
+      <br>
+      pAtk: <input type="number" name="pAtk" id="pAtk" min="1"><br>
+      mAtk: <input type="number" name="mAtk" id="mAtk" min="1"><br>
+      dfce: <input type="number" name="dfce" id="dfce" min="1"><br>
+      res: <input type="number" name="res" id="res" min="1"><br>
+      <br>
+      agi: <input type="number" name="agi" id="agi" min="1"><br>
+      skl: <input type="number" name="skl" id="skl" min="1"><br>
+      mov: <input type="number" name="mov" id="mov" min="1"><br>
+      <br>
+      GrowthRates: <br>
+      Max Health: <input type="number" name="MaxHealthG" id="maxHealthG" min="1"><br>
+      Max Mana: <input type="number" name="MaxManaG" id="maxManaG" min="1"><br>
+      <br>
+      pAtk: <input type="number" name="pAtkG" id="pAtkG" min="1"><br>
+      mAtk: <input type="number" name="mAtkG" id="mAtkG" min="1"><br>
+      dfce: <input type="number" name="dfceG" id="dfceG" min="1"><br>
+      res: <input type="number" name="resG" id="resG" min="1"><br>
+      <br>
+      agi: <input type="number" name="agiG" id="agiG" min="1"><br>
+      skl: <input type="number" name="sklG" id="sklG" min="1"><br>
+      <br>
+      <input type="button" name="return" id="return" onclick="outputToXML();" value="Output">
+    </p>
+    <p>
+      Output: <br>
+      <textarea name="xmlOutput" id="xmlOutput" cols="40" rows="20" readonly></textarea>
+    </p>
+  </body>
+  <script type="text/javascript">
+    var name = "";
+
+    var maxHealth = 0;
+    var maxMana = 0;
+
+    var pAtk = 0;
+    var mAtk = 0;
+    var dfce = 0;
+    var res = 0;
+
+    var skl = 0;
+    var agi = 0;
+    var mov = 0;
+
+    // GrowthRates
+    var maxHealthG = 0;
+    var maxMana = 0;
+
+    var pAtkG = 0;
+    var mAtkG = 0;
+    var dfceG = 0;
+    var resG = 0;
+
+    var sklG = 0;
+    var agiG = 0;
+
+    function outputToXML() {
+      outputXML = "";
+
+      id = document.getElementById("ID").value;
+      name = document.getElementById("characterName").value;
+
+      maxHealth = document.getElementById("maxHealth").value;
+      maxMana = document.getElementById("maxMana").value;
+
+      pAtk = document.getElementById("pAtk").value;
+      mAtk = document.getElementById("mAtk").value;
+      dfce = document.getElementById("dfce").value;
+      res = document.getElementById("res").value;
+
+      skl = document.getElementById("skl").value;
+      agi = document.getElementById("agi").value;
+      mov = document.getElementById("mov").value;
+
+      // GrowthRates
+      maxHealthG = document.getElementById("maxHealthG").value;
+      maxManaG = document.getElementById("maxManaG").value;
+
+      pAtkG = document.getElementById("pAtkG").value;
+      mAtkG = document.getElementById("mAtkG").value;
+      dfceG = document.getElementById("dfceG").value;
+      resG = document.getElementById("resG").value;
+
+      sklG = document.getElementById("sklG").value;
+      agiG = document.getElementById("agiG").value;
+
+      outputXML += "<job name=\""+id+"\">\n";
+      outputXML += "  <name type=\"text\">"+name+"</name>\n";
+      outputXML += "  <maxHealth type=\"int\">"+maxHealth+"</maxHealth>\n";
+      outputXML += "  <maxMana type=\"int\">"+maxMana+"</maxMana>\n";
+      outputXML += "  <pAtk type=\"int\">"+pAtk+"</pAtk>\n";
+      outputXML += "  <mAtk type=\"int\">"+mAtk+"</mAtk>\n";
+      outputXML += "  <dfce type=\"int\">"+dfce+"</dfce>\n";
+      outputXML += "  <res type=\"int\">"+res+"</res>\n";
+      outputXML += "  <agi type=\"int\">"+agi+"</agi>\n";
+      outputXML += "  <skl type=\"int\">"+skl+"</skl>\n";
+      outputXML += "  <mov type=\"int\">"+mov+"</mov>\n";
+      outputXML += "  <growthRates type=\"array\" type2=\"float\">\n";
+      outputXML += "    <hp>"+maxHealthG+"</hp>\n";
+      outputXML += "    <mp>"+maxManaG+"</mp>\n";
+      outputXML += "    <pAtk>"+pAtkG+"</pAtk>\n";
+      outputXML += "    <mAtk>"+mAtkG+"</mAtk>\n";
+      outputXML += "    <dfce>"+dfceG+"</dfce>\n";
+      outputXML += "    <res>"+resG+"</res>\n";
+      outputXML += "    <agi>"+agiG+"</agi>\n";
+      outputXML += "    <skl>"+sklG+"</skl>\n";
+      outputXML += "  </growthRates>\n";
+      outputXML += "</job>";
+
+      document.getElementById("xmlOutput").innerHTML = outputXML;
+    }
+  </script>
+</html>
