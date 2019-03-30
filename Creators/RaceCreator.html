@@ -2,14 +2,12 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Character Creator</title>
+    <title>Race Creator</title>
   </head>
   <body>
     <p>
       ID: <input type="text" name="ID" id="ID"><br>
       Name: <input type="text" name="CharacterName" id="characterName"><br>
-      Job: <input type="text" name="Job" id="job"><br>
-      Race: <input type="text" name="Race" id="race"><br>
       <br>
       Stats: <br>
       Max Health: <input type="number" name="MaxHealth" id="maxHealth" min="1"><br>
@@ -36,12 +34,6 @@
       agi: <input type="number" name="agiG" id="agiG" min="1"><br>
       skl: <input type="number" name="sklG" id="sklG" min="1"><br>
       <br>
-      <br>
-      Image: <input type="text" name="Image" id="img"><br>
-      AI: <input type="text" name="AI" id="ai"><br>
-      Location: <input type="number" name="Location1" id="loc1"><input type="number" name="Location2" id="loc2"><br>
-      Weapon: <input type="text" name="Weapon" id="weapon"><br>
-      <br>
       <input type="button" name="return" id="return" onclick="outputToXML();" value="Output">
     </p>
     <p>
@@ -51,8 +43,6 @@
   </body>
   <script type="text/javascript">
     var name = "";
-    var job = "";
-    var race = "";
 
     var maxHealth = 0;
     var maxMana = 0;
@@ -78,18 +68,11 @@
     var sklG = 0;
     var agiG = 0;
 
-    var img = "";
-    var ai = "";
-    var loc = [0,0];
-    var weapon = "";
-
     function outputToXML() {
       outputXML = "";
 
       id = document.getElementById("ID").value;
       name = document.getElementById("characterName").value;
-      job = document.getElementById("job").value;
-      race = document.getElementById("race").value;
 
       maxHealth = document.getElementById("maxHealth").value;
       maxMana = document.getElementById("maxMana").value;
@@ -115,46 +98,28 @@
       sklG = document.getElementById("sklG").value;
       agiG = document.getElementById("agiG").value;
 
-      img = document.getElementById("img").value;
-      ai = document.getElementById("ai").value;
-      loc = [document.getElementById("loc1").value, document.getElementById("loc2").value];
-      weapon = document.getElementById("weapon").value;
-
-      outputXML += "<unit name=\""+id+"\">\n";
+      outputXML += "<race name=\""+id+"\">\n";
       outputXML += "  <name type=\"text\">"+name+"</name>\n";
-      outputXML += "  <stats type=\"array\" type2=\"int\">\n";
-      outputXML += "    <maxHealth type=\"int\">"+maxHealth+"</maxHealth>\n";
-      outputXML += "    <maxMana type=\"int\">"+maxMana+"</maxMana>\n";
-      outputXML += "    <pAtk type=\"int\">"+pAtk+"</pAtk>\n";
-      outputXML += "    <mAtk type=\"int\">"+mAtk+"</mAtk>\n";
-      outputXML += "    <dfce type=\"int\">"+dfce+"</dfce>\n";
-      outputXML += "    <res type=\"int\">"+res+"</res>\n";
-      outputXML += "    <agi type=\"int\">"+agi+"</agi>\n";
-      outputXML += "    <skl type=\"int\">"+skl+"</skl>\n";
-      outputXML += "    <mov type=\"int\">"+mov+"</mov>\n";
-      outputXML += "  </stats>\n";
+      outputXML += "  <maxHealth type=\"int\">"+maxHealth+"</maxHealth>\n";
+      outputXML += "  <maxMana type=\"int\">"+maxMana+"</maxMana>\n";
+      outputXML += "  <pAtk type=\"int\">"+pAtk+"</pAtk>\n";
+      outputXML += "  <mAtk type=\"int\">"+mAtk+"</mAtk>\n";
+      outputXML += "  <dfce type=\"int\">"+dfce+"</dfce>\n";
+      outputXML += "  <res type=\"int\">"+res+"</res>\n";
+      outputXML += "  <agi type=\"int\">"+agi+"</agi>\n";
+      outputXML += "  <skl type=\"int\">"+skl+"</skl>\n";
+      outputXML += "  <mov type=\"int\">"+mov+"</mov>\n";
       outputXML += "  <growthRates type=\"array\" type2=\"float\">\n";
-      outputXML += "    <hp type=\"int\">"+maxHealthG+"</hp>\n";
-      outputXML += "    <mp type=\"int\">"+maxManaG+"</mp>\n";
-      outputXML += "    <pAtk type=\"int\">"+pAtkG+"</pAtk>\n";
-      outputXML += "    <mAtk type=\"int\">"+mAtkG+"</mAtk>\n";
-      outputXML += "    <dfce type=\"int\">"+dfceG+"</dfce>\n";
-      outputXML += "    <res type=\"int\">"+resG+"</res>\n";
-      outputXML += "    <agi type=\"int\">"+agiG+"</agi>\n";
-      outputXML += "    <skl type=\"int\">"+sklG+"</skl>\n";
+      outputXML += "    <hp>"+maxHealthG+"</hp>\n";
+      outputXML += "    <mp>"+maxManaG+"</mp>\n";
+      outputXML += "    <pAtk>"+pAtkG+"</pAtk>\n";
+      outputXML += "    <mAtk>"+mAtkG+"</mAtk>\n";
+      outputXML += "    <dfce>"+dfceG+"</dfce>\n";
+      outputXML += "    <res>"+resG+"</res>\n";
+      outputXML += "    <agi>"+agiG+"</agi>\n";
+      outputXML += "    <skl>"+sklG+"</skl>\n";
       outputXML += "  </growthRates>\n";
-      outputXML += "  <img type=\"text\">"+img+"</img>\n";
-      if (ai) {
-        outputXML += "  <ai type=\"text\">"+ai+"</ai>\n";
-      }
-      outputXML += "  <location type=\"array\" type2=\"int\">\n";
-      outputXML += "    <x type=\"int\">"+loc[0]+"</x>\n";
-      outputXML += "    <y type=\"int\">"+loc[1]+"</y>\n";
-      outputXML += "  </location>\n";
-      if (weapon) {
-        outputXML += "  <weapon type=\"object\">"+weapon+"</weapon>\n";
-      }
-      outputXML += "</unit>";
+      outputXML += "</race>";
 
       document.getElementById("xmlOutput").innerHTML = outputXML;
     }
