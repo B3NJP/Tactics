@@ -166,7 +166,6 @@ class Job:
         self.mov = mov
 
         self.abilities = abilities
-
         self.growthRates = growthRates
 
 class Race:
