@@ -282,11 +282,17 @@ while True:
             spot += 50
             menu.blit(font.render("Mana: " + str(selected.mana) + "/" + str(selected.getStat("maxMana", [grid, tiles])), True, black), [10, spot])
             spot += 50
-        for i in [None, None, None, "pAtk", "mAtk", "dfce", "res", "agi", "skl", "mov", "turnStage"][page*6:(page+1)*6]:
+        for i in [None, None, None, "pAtk", "mAtk", "dfce", "res", "agi", "skl", "mov", "turnStage", "weapon"][page*6:(page+1)*6]:
             if i == "turnStage":
                 menu.blit(font.render(i + ": " + str(selected.turnStage), True, black), [10, spot])
+            elif i == "weapon":
+                if selected.weapon:
+                    menu.blit(font.render(i + ": " + str(selected.weapon.name), True, black), [10, spot])
+                else:
+                    menu.blit(font.render(i + ": None", True, black), [10, spot])
             elif i:
                 menu.blit(font.render(i + ": " + str(selected.getStat(i, [grid, tiles])), True, black), [10, spot])
+            if i:
                 spot += 50
 
     if not pygame.key.get_mods() & pygame.KMOD_SHIFT:

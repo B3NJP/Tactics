@@ -102,6 +102,11 @@ class Person:
             if not i in abilities and i.mpCost <= self.mana and i.turnCost + self.turnStage <= 2:
                 abilities += [i]
 
+        if self.weapon:
+            for i in self.weapon.abilities:
+                if not i in abilities and i.mpCost <= self.mana and i.turnCost + self.turnStage <= 2:
+                    abilities += [i]
+
         return abilities
 
 
@@ -184,7 +189,7 @@ class Race:
         self.growthRates = growthRates
 
 class Weapon:
-    def __init__(self, name, maxHealth, maxMana, pAtk, mAtk, dfce, res, agi, skl, mov, abilities):
+    def __init__(self, name, maxHealth = 0, maxMana = 0, pAtk = 0, mAtk = 0, dfce = 0, res = 0, agi = 0, skl = 0, mov = 0, abilities = []):
         self.name = name
         self.maxHealth = maxHealth
         self.maxMana = maxMana
