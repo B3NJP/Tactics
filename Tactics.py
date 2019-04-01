@@ -278,11 +278,15 @@ while True:
         if page == 0:
             menu.blit(font.render(str(selected.name), True, black), [10, spot])
             spot += 50
+            menu.blit(font.render(str(selected.job.name), True, black), [10, spot])
+            spot += 50
+            menu.blit(font.render(str(selected.race.name), True, black), [10, spot])
+            spot += 50
             menu.blit(font.render("Health: " + str(selected.health) + "/" + str(selected.getStat("maxHealth", [grid, tiles])), True, black), [10, spot])
             spot += 50
             menu.blit(font.render("Mana: " + str(selected.mana) + "/" + str(selected.getStat("maxMana", [grid, tiles])), True, black), [10, spot])
             spot += 50
-        for i in [None, None, None, "pAtk", "mAtk", "dfce", "res", "agi", "skl", "mov", "turnStage", "weapon"][page*6:(page+1)*6]:
+        for i in [None, None, None, None, None, "pAtk", "mAtk", "dfce", "res", "agi", "skl", "mov", "turnStage", "weapon"][page*6:(page+1)*6]:
             if i == "turnStage":
                 menu.blit(font.render(i + ": " + str(selected.turnStage), True, black), [10, spot])
             elif i == "weapon":
