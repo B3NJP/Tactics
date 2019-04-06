@@ -76,8 +76,8 @@ def start():
 
     # Creates Enemies
     for i in cBattle[1]:
-        i.health = i.maxHealth
-        i.mana = i.maxMana
+        i.health = i.getStat("maxHealth", [grid, tiles])
+        i.mana = i.getStat("maxMana", [grid, tiles])
     enemies = []
     enemies += cBattle[1]
     deadEnemies = []
@@ -92,8 +92,8 @@ def start():
     # Unit locations
     tx = 0
     for i in units:
-        i.health = i.maxHealth
-        i.mana = i.maxMana
+        i.health = i.getStat("maxHealth", [grid, tiles])
+        i.mana = i.getStat("maxMana", [grid, tiles])
         i.location = [tx, 0]
         tx += 1
 
