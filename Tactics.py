@@ -4,7 +4,7 @@ pygame.init()
 
 # Basic Values
 box = [100, 100]
-size = [700, 700]
+size = [1000, 800]
 black = 0, 0, 0
 white = 255, 255, 255
 
@@ -54,9 +54,11 @@ targets = []
 abilityUsed = 0
 usableRange = []
 
+menuSize = [300, 400]
 spot = 25 # Spot from bottom to display usableAbilities
-menu = pygame.Surface((300, 400)) # Creates menu surface
+menu = pygame.Surface(menuSize) # Creates menu surface
 page = 0 # Creates menu page
+menu.set_alpha(200) # Makes menu transparent
 
 # Sets up units and enemies
 for i in units + enemies:
@@ -194,8 +196,8 @@ while True:
     # Draws grid
     for i in range(0, len(grid)):
         for j in range(0, len(grid[i])):
-            if ((i+area[1])*100 < 700 and (i+area[1])*100 > -100): # If the spot is within the selected area
-                if ((j+area[0])*100 < 700 and (j+area[0])*100 > -100): # If the spot is within the selected area
+            if ((i+area[1])*100 < size[1] and (i+area[1])*100 > -100): # If the spot is within the selected area
+                if ((j+area[0])*100 < size[0] and (j+area[0])*100 > -100): # If the spot is within the selected area
 
                     # Draws tile images
                     for k in tiles:
@@ -207,8 +209,8 @@ while True:
     if action == tacticsfunctions.Actions.MOVE:
         for i in range(0, len(grid)):
             for j in range(0, len(grid[i])):
-                if ((i+area[1])*100 < 700 and (i+area[1])*100 > -100): # If the spot is within the selected area
-                    if ((j+area[0])*100 < 700 and (j+area[0])*100 > -100): # If the spot is within the selected area
+                if ((i+area[1])*100 < size[1] and (i+area[1])*100 > -100): # If the spot is within the selected area
+                    if ((j+area[0])*100 < size[0] and (j+area[0])*100 > -100): # If the spot is within the selected area
                         if [j, i] in moveTo:
                             # Adjusts size of rectangle to fit in the correct spot
                             screen.fill((0, 0, 255), [max((j+area[0])*100, 0), max((i+area[1])*100, 0)] + [min((area[0] + j + 1)*100, 100), min((area[1] + i + 1)*100, 100)])
@@ -252,7 +254,7 @@ while True:
 
     # Prepares menu
     menu.fill(white)
-    pygame.draw.rect(menu, black, [0, 0, 300, 400], 1)
+    pygame.draw.rect(menu, black, [0, 0] + menuSize, 1)
 
     # Draws available actions
     if action == tacticsfunctions.Actions.ABILITY:
@@ -264,8 +266,8 @@ while True:
                 menu.blit(font.render(i.name, True, black), [10, spot])
             spot += 50
 
-        menu.blit(font.render(str(usableAbilities[abilityUsed].mpCost), True, black), [300-110, 10])
-        menu.blit(font.render(str(usableAbilities[abilityUsed].turnCost), True, black), [300-110, 25])
+        menu.blit(font.render(str(usableAbilities[abilityUsed].mpCost), True, black), [menuSize[0]-110, 10])
+        menu.blit(font.render(str(usableAbilities[abilityUsed].turnCost), True, black), [menuSize[0]-110, 25])
         damage = 0
         if usableAbilities[abilityUsed].dmgType == "physical":
             damage += selected.getStat("pAtk", [grid, tiles])
@@ -275,7 +277,7 @@ while True:
             damage *= usableAbilities[abilityUsed].multi
         else:
             damage *= usableAbilities[abilityUsed].multi
-        menu.blit(font.render(str(damage), True, black), [300-110, 40])
+        menu.blit(font.render(str(damage), True, black), [menuSize[0]-110, 40])
 
     # Shows stats
     if selected and action != tacticsfunctions.Actions.ABILITY:
@@ -304,8 +306,8 @@ while True:
             if i:
                 spot += 50
 
-    if pygame.key.get_mods() & pygame.KMOD_SHIFT:
-        screen.blit(menu, [0, 700-300])
+    # if pygame.key.get_mods() & pygame.KMOD_SHIFT:
+    screen.blit(menu, [0, size[1]-menuSize[0]])
 
     # Draws everything to screen
     pygame.display.flip()
