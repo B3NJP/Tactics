@@ -54,11 +54,18 @@ targets = []
 abilityUsed = 0
 usableRange = []
 
+# Menu
 menuSize = [300, 400]
 spot = 25 # Spot from bottom to display usableAbilities
 menu = pygame.Surface(menuSize) # Creates menu surface
 page = 0 # Creates menu page
 menu.set_alpha(200) # Makes menu transparent
+
+# Transparent Surface - For things that need to be transparent like areas things need to move to
+transparentSurface = pygame.Surface(size) # Creates surface with same dimensions as screen
+transparentSurface.fill(white) # Completely fills it as white
+transparentSurface.set_colorkey(white) # Makes white completely transparent
+transparentSurface.set_alpha(150) # Makes it transparent
 
 # Sets up units and enemies
 for i in units + enemies:
@@ -126,13 +133,13 @@ while True:
             # Scroll screen around
             if not pygame.key.get_mods() & pygame.KMOD_SHIFT:
                 if event.key == pygame.K_UP:
-                    area[1] += .2
+                    area[1] += .5
                 if event.key == pygame.K_RIGHT:
-                    area[0] -= .2
+                    area[0] -= .5
                 if event.key == pygame.K_DOWN:
-                    area[1] -= .2
+                    area[1] -= .5
                 if event.key == pygame.K_LEFT:
-                    area[0] += .2
+                    area[0] += .5
             else:
                 if event.key == pygame.K_RIGHT:
                     page += 1
@@ -155,7 +162,7 @@ while True:
 
                 if event.key == pygame.K_m and selected.turnStage <= 0.5:
                     action = tacticsfunctions.Actions.MOVE
-                    moveTo = tacticsfunctions.moveAble(selected, grid, enemies, tiles) # Shows where unit can be moved to
+                    moveTo = tacticsfunctions.moveAble(selected, grid, units, enemies, tiles) # Shows where unit can be moved to
 
                 if event.key == pygame.K_a and selected.turnStage < 2:
                     usableAbilities = selected.getAbilities([grid, tiles])
@@ -178,7 +185,7 @@ while True:
             elif selected in units:
                 if action == tacticsfunctions.Actions.MOVE: # Move Unit
                     if location in moveTo:
-                        tacticsfunctions.move(selected, location, grid, enemies, tiles)
+                        tacticsfunctions.move(selected, location, grid, units, enemies, tiles)
                         action = tacticsfunctions.Actions.SELECT
 
                 elif action == tacticsfunctions.Actions.ABILITY: # Use ability
@@ -192,6 +199,7 @@ while True:
 
 
     screen.fill(white) # Makes the screen white
+    transparentSurface.fill(white) # Makes transparentSurface white
 
     # Draws grid
     for i in range(0, len(grid)):
@@ -213,7 +221,7 @@ while True:
                     if ((j+area[0])*100 < size[0] and (j+area[0])*100 > -100): # If the spot is within the selected area
                         if [j, i] in moveTo:
                             # Adjusts size of rectangle to fit in the correct spot
-                            screen.fill((0, 0, 255), [max((j+area[0])*100, 0), max((i+area[1])*100, 0)] + [min((area[0] + j + 1)*100, 100), min((area[1] + i + 1)*100, 100)])
+                            transparentSurface.fill((0, 0, 255), [max((j+area[0])*100, 0), max((i+area[1])*100, 0)] + [min((area[0] + j + 1)*100, 100), min((area[1] + i + 1)*100, 100)])
 
     # Shows selected targets and ability range
     if action == tacticsfunctions.Actions.ABILITY:
@@ -223,10 +231,10 @@ while True:
                     if ((j+area[0])*100 < size[0] and (j+area[0])*100 > -100): # If the spot is within the selected area
                         if [j, i] in targets:
                             # Adjusts size of rectangle to fit in the correct spot
-                            screen.fill((255, 0, 0), [max((j+area[0])*100, 0), max((i+area[1])*100, 0)] + [min((area[0] + j + 1)*100, 100), min((area[1] + i + 1)*100, 100)])
+                            transparentSurface.fill((255, 0, 0), [max((j+area[0])*100, 0), max((i+area[1])*100, 0)] + [min((area[0] + j + 1)*100, 100), min((area[1] + i + 1)*100, 100)])
                         elif [j, i] in usableRange:
                             # Adjusts size of rectangle to fit in the correct spot
-                            screen.fill((200, 0, 0), [max((j+area[0])*100, 0), max((i+area[1])*100, 0)] + [min((area[0] + j + 1)*100, 100), min((area[1] + i + 1)*100, 100)])
+                            transparentSurface.fill((200, 0, 0), [max((j+area[0])*100, 0), max((i+area[1])*100, 0)] + [min((area[0] + j + 1)*100, 100), min((area[1] + i + 1)*100, 100)])
 
     # Grid lines
     for i in range(0, len(grid)):
@@ -244,8 +252,9 @@ while True:
 
         # Highlights selected unit
         if action == tacticsfunctions.Actions.CHOOSE and selected == i:
-            screen.fill((255, 175, 0), [max((selected.location[0]+area[0])*100, 0), max((selected.location[1]+area[1])*100, 0)] + [min((area[0] + selected.location[0] + 1)*100, 100), min((area[1] + selected.location[1] + 1)*100, 100)])
+            transparentSurface.fill((255, 175, 0), [max((selected.location[0]+area[0])*100, 0), max((selected.location[1]+area[1])*100, 0)] + [min((area[0] + selected.location[0] + 1)*100, 100), min((area[1] + selected.location[1] + 1)*100, 100)])
 
+        # Unit image
         screen.blit(i.img, [(i.location[0]+area[0])*100, (i.location[1]+area[1])*100])
 
     # Draw enemies
@@ -266,9 +275,10 @@ while True:
                 menu.blit(font.render(i.name, True, black), [10, spot])
             spot += 50
 
-        menu.blit(font.render(str(usableAbilities[abilityUsed].mpCost), True, black), [menuSize[0]-110, 10])
-        menu.blit(font.render(str(usableAbilities[abilityUsed].turnCost), True, black), [menuSize[0]-110, 25])
-        damage = 0
+        # Shows mpCost, turnCost and
+        menu.blit(font.render("MP: " + str(usableAbilities[abilityUsed].mpCost), True, black), [menuSize[0]-110, 10])
+        menu.blit(font.render("TURN: " + str(usableAbilities[abilityUsed].turnCost), True, black), [menuSize[0]-110, 25])
+        damage = usableAbilities[abilityUsed].baseDmg
         if usableAbilities[abilityUsed].dmgType == "physical":
             damage += selected.getStat("pAtk", [grid, tiles])
             damage *= usableAbilities[abilityUsed].multi
@@ -277,7 +287,7 @@ while True:
             damage *= usableAbilities[abilityUsed].multi
         else:
             damage *= usableAbilities[abilityUsed].multi
-        menu.blit(font.render(str(damage), True, black), [menuSize[0]-110, 40])
+        menu.blit(font.render("DMG: " +  str(damage), True, black), [menuSize[0]-110, 40])
 
     # Shows stats
     if selected and action != tacticsfunctions.Actions.ABILITY:
@@ -289,12 +299,12 @@ while True:
             spot += 50
             menu.blit(font.render(str(selected.race.name), True, black), [10, spot])
             spot += 50
-            menu.blit(font.render("Health: " + str(selected.health) + "/" + str(selected.getStat("maxHealth", [grid, tiles])), True, black), [10, spot])
+            menu.blit(font.render("HP: " + str(selected.health) + "/" + str(selected.getStat("maxHealth", [grid, tiles])), True, black), [10, spot])
             spot += 50
-            menu.blit(font.render("Mana: " + str(selected.mana) + "/" + str(selected.getStat("maxMana", [grid, tiles])), True, black), [10, spot])
+            menu.blit(font.render("MP: " + str(selected.mana) + "/" + str(selected.getStat("maxMana", [grid, tiles])), True, black), [10, spot])
             spot += 50
-        for i in [None, None, None, None, None, "pAtk", "mAtk", "dfce", "res", "agi", "skl", "mov", "turnStage", "weapon"][page*6:(page+1)*6]:
-            if i == "turnStage":
+        for i in [None, None, None, None, None, "pAtk", "mAtk", "dfce", "res", "agi", "skl", "mov", "TURN", "weapon"][page*6:(page+1)*6]:
+            if i == "TURN":
                 menu.blit(font.render(i + ": " + str(selected.turnStage), True, black), [10, spot])
             elif i == "weapon":
                 if selected.weapon:
@@ -306,8 +316,12 @@ while True:
             if i:
                 spot += 50
 
+    # Draws menu
     # if pygame.key.get_mods() & pygame.KMOD_SHIFT:
     screen.blit(menu, [0, size[1]-menuSize[0]])
+
+    #Draws transparentSurface
+    screen.blit(transparentSurface, [0, 0])
 
     # Draws everything to screen
     pygame.display.flip()

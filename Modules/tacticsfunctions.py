@@ -1,9 +1,9 @@
 import sys
 from enum import Enum, auto
 
-def move(person, location, grid, enemies, tiles):
+def move(person, location, grid, units, enemies, tiles):
     if person.turnStage <= 0.5:
-        if location in moveAble(person, grid, enemies, tiles):
+        if location in moveAble(person, grid, units, enemies, tiles):
             person.turnStage = 0.9
             person.location[0] = location[0]
             person.location[1] = location[1]
@@ -17,7 +17,7 @@ class Actions(Enum):
 def distanceFrom(loc, loc2):
     return abs(loc[0]-loc2[0]) + abs(loc[1]-loc2[1])
 
-def moveAble(person, grid, enemies, tiles):
+def moveAble(person, grid, units, enemies, tiles):
     queue = [[person.location, person.getStat("mov", [grid, tiles])]]
     moveTo = []
     while queue:
@@ -42,7 +42,8 @@ def moveAble(person, grid, enemies, tiles):
                     if current[1] - tempTile.mov >= 0:
                         if not i in [j[0] for j in moveTo]:
                             queue += [[i, current[1] - tempTile.mov]]
-                            moveTo += [[i, current[1] - tempTile.mov]]
+                            if not i in [k.location for k in units]:
+                                moveTo += [[i, current[1] - tempTile.mov]]
                         elif not i in [j[0] for j in moveTo if current[1] - tempTile.mov <= j[1]]:
                             queue += [[i, current[1] - tempTile.mov]]
                             for j in moveTo:
