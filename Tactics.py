@@ -1,5 +1,5 @@
 import sys, pygame, fileinput, copy
-from Modules import TacticsClasses, TacticsPresets, tacticsfunctions, xmlProcessing, battleProcessing
+from Modules import TacticsClasses, tacticsfunctions, xmlProcessing, battleProcessing
 pygame.init()
 
 # Basic Values
@@ -122,7 +122,7 @@ while True:
                     start()
 
             # Scroll screen around
-            if pygame.key.get_mods() & pygame.KMOD_SHIFT:
+            if not pygame.key.get_mods() & pygame.KMOD_SHIFT:
                 if event.key == pygame.K_UP:
                     area[1] += .2
                 if event.key == pygame.K_RIGHT:
@@ -156,7 +156,7 @@ while True:
                     moveTo = tacticsfunctions.moveAble(selected, grid, enemies, tiles) # Shows where unit can be moved to
 
                 if event.key == pygame.K_a and selected.turnStage < 2:
-                    usableAbilities = selected.getAbilities()
+                    usableAbilities = selected.getAbilities([grid, tiles])
                     if usableAbilities:
                         action = tacticsfunctions.Actions.ABILITY
                         targets = []
@@ -191,6 +191,18 @@ while True:
 
     screen.fill(white) # Makes the screen white
 
+    # Draws grid
+    for i in range(0, len(grid)):
+        for j in range(0, len(grid[i])):
+            if ((i+area[1])*100 < 700 and (i+area[1])*100 > -100): # If the spot is within the selected area
+                if ((j+area[0])*100 < 700 and (j+area[0])*100 > -100): # If the spot is within the selected area
+
+                    # Draws tile images
+                    for k in tiles:
+                        if grid[i][j] == k.key: # Finds correct tile
+                            screen.blit(k.img, [(j+area[0])*100, (i+area[1])*100])
+                            break
+
     # Shows where unit can be moved to
     if action == tacticsfunctions.Actions.MOVE:
         for i in range(0, len(grid)):
@@ -214,19 +226,12 @@ while True:
                             # Adjusts size of rectangle to fit in the correct spot
                             screen.fill((200, 0, 0), [max((j+area[0])*100, 0), max((i+area[1])*100, 0)] + [min((area[0] + j + 1)*100, 100), min((area[1] + i + 1)*100, 100)])
 
-    # Draws grid
+    # Grid lines
     for i in range(0, len(grid)):
         for j in range(0, len(grid[i])):
             if ((i+area[1])*100 < 700 and (i+area[1])*100 > -100): # If the spot is within the selected area
                 if ((j+area[0])*100 < 700 and (j+area[0])*100 > -100): # If the spot is within the selected area
                     pygame.draw.rect(screen, black, [(j+area[0])*100, (i+area[1])*100]+box, 1) # Draws grid lines
-
-                    # Draws tile images
-                    for k in tiles:
-                        if grid[i][j] == k.key: # Finds correct tile
-                            screen.blit(k.img, [(j+area[0])*100, (i+area[1])*100])
-                            break
-
     # Draws units
     for i in units:
         # Shows move stage
@@ -299,7 +304,7 @@ while True:
             if i:
                 spot += 50
 
-    if not pygame.key.get_mods() & pygame.KMOD_SHIFT:
+    if pygame.key.get_mods() & pygame.KMOD_SHIFT:
         screen.blit(menu, [0, 700-300])
 
     # Draws everything to screen
