@@ -80,7 +80,7 @@ class Person:
         val += getattr(self, stat) + getattr(self.job, stat) + getattr(self.race, stat)
         if self.weapon:
             val += getattr(self.weapon, stat)
-        if stat == "dfce" or stat == "res":
+        if stat in ["pAtk", "mAtk", "dfce", "res", "agi", "skl"]:
             for i in gridTiles[1]:
                 if gridTiles[0][self.location[1]][self.location[0]] == i.key:
                     val += getattr(i, stat)
@@ -88,7 +88,7 @@ class Person:
 
         return val
 
-    def getAbilities(self):
+    def getAbilities(self, gridTiles):
         abilities = []
         for i in self.abilities:
             if not i in abilities and i.mpCost <= self.mana and i.turnCost + self.turnStage <= 2:
@@ -106,6 +106,13 @@ class Person:
             for i in self.weapon.abilities:
                 if not i in abilities and i.mpCost <= self.mana and i.turnCost + self.turnStage <= 2:
                     abilities += [i]
+
+        for i in gridTiles[1]:
+            if gridTiles[0][self.location[1]][self.location[0]] == i.key:
+                for j in i.abilities:
+                    if not j in abilities and j.mpCost <= self.mana and j.turnCost + self.turnStage <= 2:
+                        abilities += [j]
+                break
 
         return abilities
 
@@ -206,12 +213,20 @@ class Weapon:
         self.abilities = abilities
 
 class Tile:
-    def __init__(self, name, key, dfce, res, mov, img):
+    def __init__(self, name, key, img, pAtk=0, mAtk=0, dfce=0, res=0, agi=0, skl=0, mov=1, abilities = []):
         self.name = name
         self.key = key
 
+        self.pAtk = pAtk
+        self.mAtk = mAtk
+
         self.dfce = dfce
         self.res = res
+
+        self.agi = agi
+        self.skl = skl
         self.mov = mov
 
         self.img = pygame.transform.scale(pygame.image.load(img), [100, 100])
+
+        self.abilities = abilities
