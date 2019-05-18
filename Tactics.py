@@ -219,8 +219,8 @@ while True:
     if action == tacticsfunctions.Actions.ABILITY:
         for i in range(0, len(grid)):
             for j in range(0, len(grid[i])):
-                if ((i+area[1])*100 < 700 and (i+area[1])*100 > -100): # If the spot is within the selected area
-                    if ((j+area[0])*100 < 700 and (j+area[0])*100 > -100): # If the spot is within the selected area
+                if ((i+area[1])*100 < size[1] and (i+area[1])*100 > -100): # If the spot is within the selected area
+                    if ((j+area[0])*100 < size[0] and (j+area[0])*100 > -100): # If the spot is within the selected area
                         if [j, i] in targets:
                             # Adjusts size of rectangle to fit in the correct spot
                             screen.fill((255, 0, 0), [max((j+area[0])*100, 0), max((i+area[1])*100, 0)] + [min((area[0] + j + 1)*100, 100), min((area[1] + i + 1)*100, 100)])
@@ -231,8 +231,8 @@ while True:
     # Grid lines
     for i in range(0, len(grid)):
         for j in range(0, len(grid[i])):
-            if ((i+area[1])*100 < 700 and (i+area[1])*100 > -100): # If the spot is within the selected area
-                if ((j+area[0])*100 < 700 and (j+area[0])*100 > -100): # If the spot is within the selected area
+            if ((i+area[1])*100 < size[1] and (i+area[1])*100 > -100): # If the spot is within the selected area
+                if ((j+area[0])*100 < size[0] and (j+area[0])*100 > -100): # If the spot is within the selected area
                     pygame.draw.rect(screen, black, [(j+area[0])*100, (i+area[1])*100]+box, 1) # Draws grid lines
     # Draws units
     for i in units:
