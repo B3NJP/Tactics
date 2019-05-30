@@ -1,3 +1,4 @@
+import copy
 import xml.etree.ElementTree as ET
 from Modules import TacticsClasses
 
@@ -20,7 +21,7 @@ def toDictionary(element):
             if i.get("type2") == "float":
                 tDict[i.tag] = [float(j.text) for j in i]
             if i.get("type2") == "object":
-                tDict[i.tag] = [All[j.tag][j.text] for j in i]
+                tDict[i.tag] = [copy.deepcopy(All[j.tag][j.text]) for j in i]
 
     return tDict
 
