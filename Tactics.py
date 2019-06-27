@@ -301,7 +301,7 @@ while True:
     # if pygame.key.get_mods() & pygame.KMOD_SHIFT:
     screen.blit(menu, [0, size[1]-menuSize[0]])
 
-    #Draws transparentSurface
+    # Draws transparentSurface
     screen.blit(transparentSurface, [0, 0])
 
     # Draws everything to screen
