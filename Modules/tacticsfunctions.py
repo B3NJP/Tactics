@@ -9,7 +9,6 @@ def move(person, location, grid, units, enemies, tiles):
             person.location[1] = location[1]
 
 class Actions(Enum):
-    CHOOSE = auto()
     SELECT = auto()
     MOVE = auto()
     ABILITY = auto()

@@ -123,6 +123,7 @@ while True:
             # Change back to SELECT
             if event.key == pygame.K_ESCAPE:
                 action = tacticsfunctions.Actions.SELECT
+                selected = None
 
             # Ends turn
             if event.key == pygame.K_RETURN:
@@ -156,10 +157,7 @@ while True:
                         usableRange = tacticsfunctions.usableArea(selected, usableAbilities[abilityUsed], grid, tiles)
 
             # Choose action
-            if action == tacticsfunctions.Actions.CHOOSE:
-                if event.key == pygame.K_s:
-                    action = tacticsfunctions.Actions.SELECT
-
+            if selected:
                 if event.key == pygame.K_m and selected.turnStage <= 0.5:
                     action = tacticsfunctions.Actions.MOVE
                     moveTo = tacticsfunctions.moveAble(selected, grid, units, enemies, tiles) # Shows where unit can be moved to
@@ -176,17 +174,21 @@ while True:
 
             # Gets location of mouse (adjusted for scroll)
             location = [int((event.pos[0]-area[0]*100)//100), int((event.pos[1]-area[1]*100)//100)]
-            if action == tacticsfunctions.Actions.SELECT: # Select Unit
+
+            # Selects a unit
+            if action == tacticsfunctions.Actions.SELECT:
+                selected = None
+                action = tacticsfunctions.Actions.SELECT
                 for i in units + enemies:
                     if (i.location == location):
                         selected = i
-                        action = tacticsfunctions.Actions.CHOOSE
                         break
-            elif selected in units:
+            elif selected in units: # If a player unit has been selected
                 if action == tacticsfunctions.Actions.MOVE: # Move Unit
                     if location in moveTo:
                         tacticsfunctions.move(selected, location, grid, units, enemies, tiles)
                         action = tacticsfunctions.Actions.SELECT
+                        selected = None
 
                 elif action == tacticsfunctions.Actions.ABILITY: # Use ability
                     if location in usableRange:
@@ -195,6 +197,7 @@ while True:
                             usableAbilities[abilityUsed].use(selected, targets, units, enemies, [grid, tiles])
                             tacticsfunctions.checkDead(units, enemies, deadUnits, deadEnemies)
                             action = tacticsfunctions.Actions.SELECT
+                            selected = None
 
 
 
@@ -242,24 +245,8 @@ while True:
             if ((i+area[1])*100 < size[1] and (i+area[1])*100 > -100): # If the spot is within the selected area
                 if ((j+area[0])*100 < size[0] and (j+area[0])*100 > -100): # If the spot is within the selected area
                     pygame.draw.rect(screen, black, [(j+area[0])*100, (i+area[1])*100]+box, 1) # Draws grid lines
-    # Draws units
-    for i in units:
-        # Shows move stage
-        if i.turnStage >= 1:
-            screen.fill((200, 200, 200), [max((i.location[0]+area[0])*100, 0), max((i.location[1]+area[1])*100, 0)] + [min((area[0] + i.location[0] + 1)*100, 100), min((area[1] + i.location[1] + 1)*100, 100)])
-        elif i.turnStage >= 2:
-            screen.fill((100, 100, 100), [max((i.location[0]+area[0])*100, 0), max((i.location[1]+area[1])*100, 0)] + [min((area[0] + i.location[0] + 1)*100, 100), min((area[1] + i.location[1] + 1)*100, 100)])
 
-        # Highlights selected unit
-        if action == tacticsfunctions.Actions.CHOOSE and selected == i:
-            transparentSurface.fill((255, 175, 0), [max((selected.location[0]+area[0])*100, 0), max((selected.location[1]+area[1])*100, 0)] + [min((area[0] + selected.location[0] + 1)*100, 100), min((area[1] + selected.location[1] + 1)*100, 100)])
-
-        # Unit image
-        screen.blit(i.img, [(i.location[0]+area[0])*100, (i.location[1]+area[1])*100])
-
-    # Draw enemies
-    for i in enemies:
-        screen.blit(i.img, [(i.location[0]+area[0])*100, (i.location[1]+area[1])*100])
+    Draw.drawUnits(units, enemies, screen, transparentSurface, area, selected)
 
     # Prepares menu
     menu.fill(white)
