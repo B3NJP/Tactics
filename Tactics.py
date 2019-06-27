@@ -1,5 +1,5 @@
 import sys, pygame, fileinput, copy
-from Modules import TacticsClasses, tacticsfunctions, xmlProcessing, battleProcessing
+from Modules import TacticsClasses, tacticsfunctions, xmlProcessing, battleProcessing, Draw
 pygame.init()
 
 # Basic Values
