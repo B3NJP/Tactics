@@ -218,13 +218,7 @@ while True:
 
     # Shows where unit can be moved to
     if action == tacticsfunctions.Actions.MOVE:
-        for i in range(0, len(grid)):
-            for j in range(0, len(grid[i])):
-                if ((i+area[1])*100 < size[1] and (i+area[1])*100 > -100): # If the spot is within the selected area
-                    if ((j+area[0])*100 < size[0] and (j+area[0])*100 > -100): # If the spot is within the selected area
-                        if [j, i] in moveTo:
-                            # Adjusts size of rectangle to fit in the correct spot
-                            transparentSurface.fill((0, 0, 255), [max((j+area[0])*100, 0), max((i+area[1])*100, 0)] + [min((area[0] + j + 1)*100, 100), min((area[1] + i + 1)*100, 100)])
+        Draw.drawMoveArea(transparentSurface, size, area, grid, moveTo)
 
     # Shows selected targets and ability range
     if action == tacticsfunctions.Actions.ABILITY:
