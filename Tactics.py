@@ -4,7 +4,7 @@ pygame.init()
 
 # Basic Values
 box = [100, 100]
-size = [1000, 800]
+screenSize = [1000, 800]
 black = 0, 0, 0
 white = 255, 255, 255
 
@@ -19,7 +19,7 @@ cBattle = battles[cBattleN]
 grid = copy.deepcopy(cBattle[0])
 
 # Creates Screen
-screen = pygame.display.set_mode(size)
+screen = pygame.display.set_mode(screenSize)
 
 # Gets Tiles
 tiles = []
@@ -62,7 +62,7 @@ page = 0 # Creates menu page
 menu.set_alpha(200) # Makes menu transparent
 
 # Transparent Surface - For things that need to be transparent like areas things need to move to
-transparentSurface = pygame.Surface(size) # Creates surface with same dimensions as screen
+transparentSurface = pygame.Surface(screenSize) # Creates surface with same dimensions as screen
 transparentSurface.fill(white) # Completely fills it as white
 transparentSurface.set_colorkey(white) # Makes white completely transparent
 transparentSurface.set_alpha(150) # Makes it transparent
@@ -207,8 +207,8 @@ while True:
     # Draws grid
     for i in range(0, len(grid)):
         for j in range(0, len(grid[i])):
-            if ((i+area[1])*100 < size[1] and (i+area[1])*100 > -100): # If the spot is within the selected area
-                if ((j+area[0])*100 < size[0] and (j+area[0])*100 > -100): # If the spot is within the selected area
+            if ((i+area[1])*100 < screenSize[1] and (i+area[1])*100 > -100): # If the spot is within the selected area
+                if ((j+area[0])*100 < screenSize[0] and (j+area[0])*100 > -100): # If the spot is within the selected area
 
                     # Draws tile images
                     for k in tiles:
@@ -218,14 +218,14 @@ while True:
 
     # Shows where unit can be moved to
     if action == tacticsfunctions.Actions.MOVE:
-        Draw.drawMoveArea(transparentSurface, size, area, grid, moveTo)
+        Draw.drawMoveArea(transparentSurface, screenSize, area, grid, moveTo)
 
     # Shows selected targets and ability range
     if action == tacticsfunctions.Actions.ABILITY:
         for i in range(0, len(grid)):
             for j in range(0, len(grid[i])):
-                if ((i+area[1])*100 < size[1] and (i+area[1])*100 > -100): # If the spot is within the selected area
-                    if ((j+area[0])*100 < size[0] and (j+area[0])*100 > -100): # If the spot is within the selected area
+                if ((i+area[1])*100 < screenSize[1] and (i+area[1])*100 > -100): # If the spot is within the selected area
+                    if ((j+area[0])*100 < screenSize[0] and (j+area[0])*100 > -100): # If the spot is within the selected area
                         if [j, i] in targets:
                             # Adjusts size of rectangle to fit in the correct spot
                             transparentSurface.fill((255, 0, 0), [max((j+area[0])*100, 0), max((i+area[1])*100, 0)] + [min((area[0] + j + 1)*100, 100), min((area[1] + i + 1)*100, 100)])
@@ -236,8 +236,8 @@ while True:
     # Grid lines
     for i in range(0, len(grid)):
         for j in range(0, len(grid[i])):
-            if ((i+area[1])*100 < size[1] and (i+area[1])*100 > -100): # If the spot is within the selected area
-                if ((j+area[0])*100 < size[0] and (j+area[0])*100 > -100): # If the spot is within the selected area
+            if ((i+area[1])*100 < screenSize[1] and (i+area[1])*100 > -100): # If the spot is within the selected area
+                if ((j+area[0])*100 < screenSize[0] and (j+area[0])*100 > -100): # If the spot is within the selected area
                     pygame.draw.rect(screen, black, [(j+area[0])*100, (i+area[1])*100]+box, 1) # Draws grid lines
 
     Draw.drawUnits(units, enemies, screen, transparentSurface, area, selected)
@@ -299,7 +299,7 @@ while True:
 
     # Draws menu
     # if pygame.key.get_mods() & pygame.KMOD_SHIFT:
-    screen.blit(menu, [0, size[1]-menuSize[0]])
+    screen.blit(menu, [0, screenSize[1]-menuSize[0]])
 
     # Draws transparentSurface
     screen.blit(transparentSurface, [0, 0])
